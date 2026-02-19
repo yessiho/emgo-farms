@@ -8,7 +8,7 @@ export default function AboutPage() {
     <div className="bg-white min-h-screen font-sans text-gray-800">
 
       {/* HERO SECTION */}
-      <section className="relative h-96 bg-[url('/image/oil-plam5.avif')] bg-cover bg-center flex items-center justify-center">
+      <section className="relative h-96 bg-[url('/image/picture10.jpg')] bg-cover bg-center flex items-center justify-center">
         <div className="absolute inset-0 bg-black/50"></div>
         <motion.div 
           initial={{ y: -50, opacity: 0 }}
@@ -54,7 +54,7 @@ export default function AboutPage() {
             transition={{ duration: 1 }}
           >
             <Image
-              src="/image/oil-palm13.avif"
+              src="/image/picture35.jpg"
               alt="Our Story"
               width={600}
               height={400}
@@ -243,7 +243,7 @@ export default function AboutPage() {
           </motion.h2>
 
           <div className="grid md:grid-cols-4 gap-4">
-            {['oil-palm9.jpg','oil-palm13.avif','oil-palm11.avif','oil-palm10.jpg'].map((img, idx) => (
+            {['picture22.jpg','picture23.jpg','picture32.png','picture33.png'].map((img, idx) => (
               <motion.div
                 key={idx}
                 initial={{ scale: 0.9, opacity: 0 }}
