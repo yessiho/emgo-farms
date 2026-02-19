@@ -78,7 +78,7 @@ export default function ServicesPage() {
   const [active, setActive] = useState<number | null>(null)
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
 
       {/* HERO SECTION */}
       <section
@@ -97,22 +97,21 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* INTRO SECTION */}
+      {/* COMPANY WRITE-UP */}
       <section className="container mx-auto px-6 py-16 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-6">
-          Integrated Agricultural & Processing Solutions
+          About EMGO Farms
         </h2>
-        <p className="max-w-4xl mx-auto text-gray-600 leading-relaxed text-lg">
-          EMGO Farms provides comprehensive services spanning oil palm cultivation, advanced oil production,
-          and specialized refining. Our vertically integrated structure ensures efficiency, traceability,
-          and premium product quality across every operational stage. We combine agricultural expertise,
-          modern technology, and sustainability principles to serve both local and international markets.
+        <p className="max-w-4xl mx-auto text-gray-700 leading-relaxed text-lg mb-4">
+          Founded in August 2020, EMGO Farms started with a small 4-acre farm in Ogun State and has expanded to 5 hectares in Uyo, Akwa Ibom, aiming to plant 10,000 oil palms by 2030. We are committed to sustainable farming, eco-friendly production, and community empowerment.
+        </p>
+        <p className="max-w-4xl mx-auto text-gray-700 leading-relaxed text-lg">
+          Our integrated operations—from cultivation to refined oil production—ensure efficiency, traceability, and consistent quality. Using modern agronomic techniques, environmentally responsible practices, and cutting-edge processing technology, EMGO Farms delivers premium palm oil and kernel oil to local and international markets.
         </p>
       </section>
 
       {/* SERVICES SECTION */}
       <section className="container mx-auto px-6 pb-20 space-y-10">
-
         {services.map((service) => (
           <div
             key={service.id}
@@ -193,7 +192,6 @@ export default function ServicesPage() {
             </AnimatePresence>
           </div>
         ))}
-
       </section>
 
       {/* TRUST SECTION */}
@@ -203,9 +201,7 @@ export default function ServicesPage() {
             Why Choose EMGO Farms?
           </h2>
           <p className="text-gray-700 text-lg leading-relaxed">
-            We combine agricultural expertise, modern processing facilities, sustainability commitment,
-            and strong logistics networks to provide reliable service delivery. Our integrated structure
-            ensures consistency, quality control, and long-term partnership value for our clients.
+            EMGO Farms combines sustainable agriculture, modern processing technology, strict quality control, and a strong logistics network to ensure premium products and dependable service. Our integrated approach guarantees traceability, consistency, and long-term partnership value for clients worldwide.
           </p>
         </div>
       </section>
@@ -216,8 +212,7 @@ export default function ServicesPage() {
           Let’s Build a Sustainable Future Together
         </h2>
         <p className="mb-8 text-lg max-w-2xl mx-auto opacity-90">
-          Whether you require raw palm materials, refined oils, or full-scale agricultural partnership,
-          EMGO Farms is ready to deliver excellence with integrity.
+          Whether you need raw palm materials, refined oils, or full-scale agricultural partnership, EMGO Farms delivers excellence with integrity.
         </p>
         <Link
           href="/contact"

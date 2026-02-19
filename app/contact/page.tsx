@@ -33,13 +33,26 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/90 via-green-800/70 to-orange-600/60 flex items-center justify-center px-6">
           <div className="text-center max-w-3xl">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">
-              Contact Us
+              Contact EMGO Farms
             </h1>
             <p className="text-white text-lg md:text-xl opacity-90">
-              Let’s discuss how EMGO Farms can support your agricultural and production needs.
+              Let’s discuss how EMGO Farms can support your agricultural, production, and refining needs.
             </p>
           </div>
         </div>
+      </section>
+
+      {/* COMPANY WRITE-UP */}
+      <section className="container mx-auto px-6 py-16 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-6">
+          About EMGO Farms
+        </h2>
+        <p className="max-w-4xl mx-auto text-gray-700 leading-relaxed text-lg mb-4">
+          Founded in August 2020, EMGO Farms began with a small 4-acre farm in Ogun State and expanded to 5 hectares in Uyo, Akwa Ibom. With a vision to plant 10,000 oil palms by 2030, we are committed to sustainable farming, eco-friendly production, and community empowerment.
+        </p>
+        <p className="max-w-4xl mx-auto text-gray-700 leading-relaxed text-lg">
+          Our integrated operations—from cultivation to refined oil production—ensure traceable, high-quality palm oil and kernel oil. By combining agricultural expertise, modern technology, and sustainable practices, EMGO Farms delivers premium products to both local and international markets.
+        </p>
       </section>
 
       {/* CONTACT SECTION */}
@@ -53,8 +66,7 @@ export default function ContactPage() {
             </h2>
 
             <p className="text-gray-600 mb-8 leading-relaxed">
-              We are committed to delivering excellence across the entire palm oil value chain.
-              Reach out to us for partnerships, bulk supply inquiries, or agricultural collaboration.
+              We are committed to delivering excellence across the entire palm oil value chain. Contact us for partnerships, bulk supply inquiries, or collaboration opportunities.
             </p>
 
             <div className="space-y-6 text-gray-700">
@@ -183,7 +195,7 @@ export default function ContactPage() {
           Partner With EMGO Farms
         </h2>
         <p className="mb-8 text-lg max-w-2xl mx-auto opacity-90">
-          Delivering excellence in farming, production, and refining with sustainability at the core.
+          Delivering excellence in sustainable farming, modern production, and premium refining solutions.
         </p>
         <Link
           href="/services"

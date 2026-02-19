@@ -32,7 +32,7 @@ const productsData = [
 
 export default function ProductsPage() {
   return (
-    <div className="bg-white min-h-screen opacity-150 text-gray-800 font-sans">
+    <div className="bg-white min-h-screen text-gray-800 font-sans">
 
       {/* HERO SECTION */}
       <section className="relative h-80 bg-[url('/image/oil-palm15.avif')] bg-cover bg-center flex items-center justify-center">
@@ -48,8 +48,41 @@ export default function ProductsPage() {
         </motion.div>
       </section>
 
+      {/* COMPANY OVERVIEW */}
+      <section className="py-16 bg-green-50">
+        <div className="container mx-auto px-6 text-center">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-4xl font-bold text-green-800 mb-6"
+          >
+            About EMGO Farms
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-gray-700 max-w-3xl mx-auto mb-4"
+          >
+            EMGO Farms began as a small 4-acre farm in Obadeyi Town, Ogun State in 2020. Today, it has grown to over 5 hectares in Uyo, Akwa Ibom State, with a target of 10,000 oil palm trees by 2030.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="text-gray-700 max-w-3xl mx-auto"
+          >
+            We are dedicated to sustainable oil palm farming, high-quality palm oil production, and modern palm kernel oil refining. Our operations combine modern farming practices, efficient processes, and market-driven strategies to maximize profitability and scalability.
+          </motion.p>
+        </div>
+      </section>
+
       {/* FEATURED PRODUCTS GRID */}
-      <section className="py-20 bg-green-50">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -96,7 +129,7 @@ export default function ProductsPage() {
       </section>
 
       {/* PRODUCT CATEGORIES */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-green-50">
         <div className="container mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -161,9 +194,9 @@ export default function ProductsPage() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="text-lg mb-8"
+          className="text-lg mb-8 max-w-2xl mx-auto"
         >
-          Get premium palm oil products delivered directly from our sustainable farms.
+          EMGO Farms produces high-quality palm oil, palm kernel oil, and related products using sustainable farming practices. Partner with us for premium, eco-friendly products delivered directly from our farms.
         </motion.p>
         <motion.a
           href="/contact"

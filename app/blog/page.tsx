@@ -52,10 +52,42 @@ export default function BlogPage() {
         </div>
       </section>
 
+      {/* COMPANY WRITE-UP */}
+      <section className="py-16 bg-green-100">
+        <div className="container mx-auto px-6 text-center max-w-4xl">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-4xl font-bold text-green-800 mb-6"
+          >
+            About EMGO Farms
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="text-gray-700 mb-4"
+          >
+            EMGO Farms started in August 2020 with a small 4-acre farm in Obadeyi Town, Ogun State. Today, it spans over 5 hectares in Uyo, Akwa Ibom State, with plans to plant 10,000 oil palm trees by 2030. Our mission is to deliver high-quality, sustainable palm oil and kernel oil products while empowering local communities.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="text-gray-700"
+          >
+            With modern farming techniques, eco-friendly practices, and commitment to quality, EMGO Farms ensures that every product contributes positively to the environment and the lives of our partners.
+          </motion.p>
+        </div>
+      </section>
+
       {/* BLOG GRID */}
       <section className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-3 gap-10">
-
           {blogPosts.map((post) => (
             <motion.div
               key={post.id}
@@ -110,6 +142,39 @@ export default function BlogPage() {
           <button className="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100 transition">Next</button>
         </div>
       </section>
+
+      {/* CTA SECTION */}
+      <section className="py-16 bg-green-800 text-white text-center">
+        <motion.h2
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="text-3xl font-bold mb-4"
+        >
+          Stay Connected With EMGO Farms
+        </motion.h2>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="text-lg mb-6 max-w-2xl mx-auto"
+        >
+          Follow our blog to learn about sustainable farming, modern palm oil production, and innovations in eco-friendly agricultural practices.
+        </motion.p>
+        <motion.a
+          href="/contact"
+          initial={{ scale: 0.9, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="inline-block px-8 py-4 bg-orange-500 rounded-full font-semibold hover:bg-orange-600 transition"
+        >
+          Contact Us
+        </motion.a>
+      </section>
+
     </div>
   )
 }
