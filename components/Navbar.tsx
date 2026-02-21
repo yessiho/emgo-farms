@@ -37,35 +37,27 @@ export const Navbar = () => {
     <AnimatePresence>
       {visible && (
         <motion.nav
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          exit={{ y: -100 }}
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -100, opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="fixed top-0 bg-white w-full z-50 shadow-md py-4"
+          className="fixed top-0 bg-white/70 backdrop-blur-md w-full z-50 shadow-md py-4"
         >
           <div className="w-full mx-auto flex justify-between items-center px-6">
 
             {/* LOGO */}
             <Link href="/" className="flex items-center group">
-              <div className="relative p-[2px] rounded-2xl bg-linear-to-r from-green-700 via-green-600 to-orange-500">
-                <div className="bg-white rounded-2xl p-2 shadow-md group-hover:shadow-lg transition-all duration-300">
+              <div className="relative p-1 rounded-3xl bg-gradient-to-r from-green-700 via-green-600 to-orange-500 shadow-lg">
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-3 shadow-md group-hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <Image
                     src="/image/logo2.jpeg"
-                    alt="Emgo Farms Logo"
-                    width={120}
-                    height={50}
+                    alt="EMGO Farms Logo"
+                    width={160}  // larger width
+                    height={60}  // larger height
                     priority
                     className="object-contain"
                   />
                 </div>
-              </div>
-              <div className="ml-3 hidden sm:block">
-                <h1 className="text-lg font-bold tracking-wide text-green-900 leading-tight">
-                  EMGO FARMS
-                </h1>
-                <p className="text-xs text-gray-500 tracking-widest">
-                  Oil Palm Processing & Export
-                </p>
               </div>
             </Link>
 
@@ -118,7 +110,7 @@ export const Navbar = () => {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="md:hidden bg-white shadow-lg border-t"
+                className="md:hidden bg-white/90 backdrop-blur-md shadow-lg border-t border-gray-200"
               >
                 <ul className="flex flex-col space-y-6 p-6 text-gray-800">
                   {navLinks.map((link) => (
@@ -126,7 +118,7 @@ export const Navbar = () => {
                       <Link
                         href={link.path}
                         onClick={() => setMobileOpen(false)}
-                        className="block hover:text-orange-500"
+                        className="block hover:text-orange-500 transition"
                       >
                         {link.name}
                       </Link>
@@ -136,7 +128,7 @@ export const Navbar = () => {
                     <Link
                       href="/contact"
                       onClick={() => setMobileOpen(false)}
-                      className="block text-center px-6 py-3 rounded-full bg-orange-500 text-white font-semibold"
+                      className="block text-center px-6 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition"
                     >
                       Request Quote
                     </Link>
@@ -145,7 +137,6 @@ export const Navbar = () => {
               </motion.div>
             )}
           </AnimatePresence>
-
         </motion.nav>
       )}
     </AnimatePresence>
