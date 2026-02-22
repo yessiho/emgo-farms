@@ -1,22 +1,17 @@
 import { NextResponse } from "next/server"
-import { sanity } from "@/lib/sanity"
+import { client } from "@/lib/sanity"
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json()
+    const body = await req.json()
 
-    if (!email) {
-      return NextResponse.json({ error: "Email required" }, { status: 400 })
-    }
-
-    await sanity.create({
+    const result = await client.create({
       _type: "newsletter",
-      email,
-      subscribedAt: new Date().toISOString(),
+      email: body.email,
     })
 
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to subscribe" }, { status: 500 })
+    return NextResponse.json({ success: true, result })
+  } catch (err) {
+    return NextResponse.json({ success: false, error: err }, { status: 500 })
   }
 }

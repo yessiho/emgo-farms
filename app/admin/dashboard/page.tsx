@@ -1,5 +1,7 @@
-import { getServerSession } from "next-auth";
-
-if (!session) {
-  redirect("/admin/login");
+export default function DashboardPage() {
+  return (
+    <div>
+      <h1>Admin Dashboard</h1>
+    </div>
+  )
 }

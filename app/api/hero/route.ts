@@ -10,3 +10,12 @@ export async function GET() {
     ctaSubtitle: "Join EMGO Farms today and experience professional guidance, sustainable solutions, and organic produce like never before."
   })
 }
+export async function POST(request: Request) {
+  const body = await request.json()
+  console.log("New post data:", body)
+
+  return new Response(
+    JSON.stringify({ message: "Post created successfully" }),
+    { status: 201 }
+  )
+}
