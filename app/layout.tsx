@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
+// app/layout.tsx
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 // Google Fonts
 const geistSans = Geist({
