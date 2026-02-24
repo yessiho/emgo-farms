@@ -228,7 +228,7 @@ export const Footer = () => {
                     className="flex items-center gap-1.5 text-gray-300 hover:text-[#25D366] text-xs sm:text-sm transition-colors"
                   >
                     <FaWhatsapp size={11} className="text-[#25D366] flex-shrink-0" />
-                    +234 803 396 8137
+                    +234 813 135 0333
                   </a>
                 </div>
               </div>

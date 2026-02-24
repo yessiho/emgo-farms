@@ -521,6 +521,8 @@ export default function AboutPage() {
                 { name: "Development Bank of Nigeria (DBN)", desc: "Long-term development financing for EMGO's agro-processing infrastructure and value chain investments.", type: "Development Finance", highlight: true },
                 { name: "Private Equity Investors", desc: "Strategic capital partners providing growth equity to accelerate plantation development and processing plant construction.", type: "Private Capital", highlight: false },
                 { name: "Agri-Impact Fund (AIF)", desc: "Impact investment fund aligned with EMGO's ESG objectives and sustainable agriculture mission across West Africa.", type: "Impact Investment", highlight: false },
+                { name: "Bank of Industry (BOI)", desc: "Industrial development financing to support EMGO's agro-processing plant, machinery acquisition, and value-addition infrastructure.", type: "Development Finance", highlight: true },
+                { name: "Agence Française de Développement (AFD)", desc: "French development agency partnership providing concessional financing and technical support for sustainable agro-industrial projects in West Africa.", type: "International Finance", highlight: false },
               ].map((partner, idx) => (
                 <motion.div
                   key={idx}
@@ -613,6 +615,215 @@ export default function AboutPage() {
                   <FaWhatsapp size={17} /> WhatsApp Us
                 </a>
               </div>
+            </div>
+          </motion.div>
+
+        </div>
+      </section>
+
+
+      {/* QUOTE IMAGE SECTION */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-green-50">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9 }}
+            className="relative w-full mx-auto rounded-3xl overflow-hidden shadow-2xl border border-green-100 
+                 h-[500px] sm:h-[600px] lg:h-[920px]"
+          >
+            <Image
+              src="/image/think.jpeg"
+              alt="EMGO Farms Quote"
+              fill
+              className="object-cover object-center"
+            />
+          </motion.div>
+        </div>
+      </section>
+
+
+      {/* ── WOMEN & CHILDREN COMMUNITY SUPPORT ──────────────────
+          Mobile:  single column, stacked
+          Tablet:  2-column grid for initiative cards
+          Desktop: image left + text right, 4-col initiative grid
+      ──────────────────────────────────────────────────────── */}
+      <section className="py-14 sm:py-18 lg:py-28 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+
+          {/* ── Section header ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-10 sm:mb-14 lg:mb-20"
+          >
+            <span className="inline-block bg-pink-100 text-pink-700 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-3 sm:mb-4">
+              Community Impact
+            </span>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-green-800 mb-3 sm:mb-5 leading-tight">
+              Supporting Women &amp; Children<br className="hidden sm:block" />
+              <span className="text-orange-500"> in Our Host Community</span>
+            </h2>
+            <p className="text-gray-600 max-w-3xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed">
+              At EMGO Farms, we believe that true agricultural success is measured not only in harvests,
+              but in the lives we uplift. We are deeply committed to the welfare of women and children
+              in Nsit Atai and across our host communities in Akwa Ibom State.
+            </p>
+          </motion.div>
+
+          {/* ── Hero image + intro text side by side (lg+), stacked (mobile) ── */}
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center mb-14 sm:mb-16 lg:mb-20">
+
+            {/* Image card */}
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9 }}
+              className="w-full lg:w-1/2 relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] flex-shrink-0"
+            >
+              <Image
+                src="/image/picture1.jpg"
+                alt="EMGO Farms Community Support — Women and Children"
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-700"
+              />
+              {/* Overlay badge */}
+              <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-3 shadow-lg">
+                <p className="text-green-800 font-bold text-sm leading-snug">💗 Community First</p>
+                <p className="text-gray-500 text-xs mt-0.5">Nsit Atai, Akwa Ibom State</p>
+              </div>
+            </motion.div>
+
+            {/* Text block */}
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9 }}
+              className="w-full lg:w-1/2"
+            >
+              <div className="space-y-4 sm:space-y-5 text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed">
+                <p>
+                  Our host communities are the heartbeat of everything we do. From the very beginning,
+                  EMGO Farms has placed community wellbeing at the core of our agricultural mission —
+                  because we know that no enterprise can truly thrive while those around it struggle.
+                </p>
+                <p>
+                  We champion programs that place women at the forefront of agricultural value chains,
+                  providing skills training, economic inclusion, and leadership opportunities.
+                  Women in our communities are not just beneficiaries — they are active partners in
+                  building EMGO's agro-industrial future.
+                </p>
+                <p>
+                  For our children, we invest in education, nutrition, and safe development environments —
+                  because the children of today's host community are the agro-industrial leaders of tomorrow.
+                </p>
+              </div>
+
+              {/* Stats row */}
+              <div className="mt-7 sm:mt-8 grid grid-cols-3 gap-3 sm:gap-5">
+                {[
+                  { value: "200+", label: "Women Empowered" },
+                  { value: "500+", label: "Children Supported" },
+                  { value: "5+",   label: "Community Programs" },
+                ].map((stat, i) => (
+                  <div key={i} className="text-center bg-pink-50 rounded-2xl p-3 sm:p-4 border border-pink-100">
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-orange-500">{stat.value}</p>
+                    <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 leading-snug">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+          </div>
+
+          {/* ── Initiative cards grid ──
+              Mobile:  1-column
+              Tablet:  2-column
+              Desktop: 4-column
+          ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7">
+            {[
+              {
+                icon: "👩‍🌾",
+                title: "Women in Agribusiness",
+                color: "bg-green-50 border-green-100",
+                accent: "text-green-800",
+                desc: "Training programs equipping women with modern farming techniques, cooperative management, and agro-processing skills to build independent livelihoods.",
+              },
+              {
+                icon: "📚",
+                title: "Children's Education Fund",
+                color: "bg-orange-50 border-orange-100",
+                accent: "text-orange-700",
+                desc: "Scholarship support, school supply drives, and infrastructure contributions to keep children in school and open pathways to academic excellence.",
+              },
+              {
+                icon: "🍽️",
+                title: "Nutrition & Food Security",
+                color: "bg-pink-50 border-pink-100",
+                accent: "text-pink-700",
+                desc: "Community feeding initiatives and farm-fresh food access programs targeting mothers and young children in underserved households.",
+              },
+              {
+                icon: "🏥",
+                title: "Health & Wellbeing",
+                color: "bg-blue-50 border-blue-100",
+                accent: "text-blue-700",
+                desc: "Periodic health outreach, maternal health awareness campaigns, and partnerships with local health centers to improve community wellness outcomes.",
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className={`rounded-2xl border p-5 sm:p-6 lg:p-7 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${item.color}`}
+              >
+                <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{item.icon}</div>
+                <h3 className={`text-sm sm:text-base lg:text-lg font-bold mb-2 sm:mb-3 ${item.accent}`}>
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* ── Bottom CTA strip ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-12 sm:mt-14 lg:mt-16 bg-gradient-to-r from-green-800 to-green-900 rounded-3xl px-6 sm:px-10 py-8 sm:py-10 text-white text-center shadow-xl"
+          >
+            <p className="text-base sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 leading-snug">
+              💗 Together, we grow stronger communities.
+            </p>
+            <p className="text-green-200 text-xs sm:text-sm lg:text-base max-w-2xl mx-auto mb-6 sm:mb-7 leading-relaxed">
+              EMGO Farms invites partners, NGOs, and government agencies to collaborate on expanding
+              our community support programs for women and children across Akwa Ibom State and beyond.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+              <Link
+                href="/contact"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-7 sm:px-9 py-3 sm:py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold text-sm sm:text-base transition-all duration-200 shadow-lg hover:scale-[1.03] active:scale-95"
+              >
+                Partner With Us →
+              </Link>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 sm:px-9 py-3 sm:py-3.5 border-2 border-white/50 hover:border-white text-white rounded-full font-semibold text-sm sm:text-base transition-all duration-200 hover:bg-white/10"
+              >
+                <FaWhatsapp size={16} /> Chat on WhatsApp
+              </a>
             </div>
           </motion.div>
 

@@ -13,7 +13,7 @@ const blogPosts = [
     author: "EMGO Team",
     excerpt:
       "Learn how sustainable farming practices improve yield, conserve nature, and boost efficiency in oil palm farming.",
-    image: "/image/blog1.jpg",
+    image: "/image/gallery5.jpg",
     slug: "sustainable-oil-palm-farming",
     readTime: "5 min read",
   },
@@ -25,7 +25,7 @@ const blogPosts = [
     author: "EMGO Team",
     excerpt:
       "Explore modern techniques for high-quality palm oil production and efficiency using advanced machinery and best practices.",
-    image: "/image/blog2.jpg",
+    image: "/image/gallery6.jpg",
     slug: "modern-palm-oil-production",
     readTime: "6 min read",
   },
@@ -37,7 +37,7 @@ const blogPosts = [
     author: "EMGO Team",
     excerpt:
       "A detailed guide on refining palm kernel oil, the processes involved, and its wide range of industrial and culinary uses.",
-    image: "/image/blog3.jpg",
+    image: "/image/gallery10.jpg",
     slug: "palm-kernel-oil-refining",
     readTime: "7 min read",
   },
@@ -56,7 +56,7 @@ export default function BlogPage() {
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section
         className="relative h-56 sm:h-72 md:h-80 lg:h-96 bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: "url('/image/products-hero.jpg')" }}
+        style={{ backgroundImage: "url('/image/gallery9.jpg')" }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/85 via-green-900/60 to-orange-600/50" />
 

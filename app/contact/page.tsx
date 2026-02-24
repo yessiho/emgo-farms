@@ -50,7 +50,7 @@ export default function ContactPage() {
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section
         className="relative h-56 sm:h-72 md:h-80 lg:h-[420px] bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: "url('/image/products-hero.jpg')" }}
+        style={{ backgroundImage: "url('/image/gallery11.jpg')" }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/90 via-green-800/70 to-orange-600/60" />
 
@@ -185,7 +185,7 @@ export default function ContactPage() {
                     <h4 className="font-bold text-green-800 mb-1 text-sm sm:text-base">Phone / WhatsApp</h4>
                     <div className="space-y-1.5">
                       {[
-                        { display: "+234 803 339 5971", tel: "+2348033395971", wa: `https://wa.me/2348033395971?text=${WHATSAPP_MESSAGE}` },
+                        { display: "+234 813 135 0333", tel: "+2348131350333", wa: `https://wa.me/2348131350333?text=${WHATSAPP_MESSAGE}` },
                         { display: "+234 803 396 8137", tel: "+2348033968137", wa: `https://wa.me/2348033968137?text=${WHATSAPP_MESSAGE}` },
                       ].map((num) => (
                         <a

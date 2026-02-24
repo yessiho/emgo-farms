@@ -9,22 +9,22 @@ import "yet-another-react-lightbox/styles.css"
 
 const galleryImages = [
   { src: "/image/oil-palm9.jpg",          alt: "Oil Palm Plantation - Nsit Atai" },
-  { src: "/image/farm2.jpg",              alt: "High-Yield Oil Palm Trees" },
-  { src: "/image/farm3.jpg",              alt: "Fresh Fruit Bunch Harvesting" },
-  { src: "/image/farm4.jpg",              alt: "Palm Oil Processing Unit" },
-  { src: "/image/farm5.jpg",              alt: "Palm Kernel Oil Refining Process" },
-  { src: "/image/oil-palm2.webp",         alt: "Premium Oil Palm Fruits" },
-  { src: "/image/palm-hero.jpg",          alt: "Integrated Farm Landscape" },
-  { src: "/image/palm-oil-production.jpg",alt: "Refined Palm Oil Packaging" },
+  { src: "/image/gallery2.jpg",              alt: "High-Yield Oil Palm Trees" },
+  { src: "/image/gallery3.jpg",              alt: "Fresh Fruit Bunch Harvesting" },
+  { src: "/image/gallery4.jpg",              alt: "Palm Oil Processing Unit" },
+  { src: "/image/gallery5.jpg",              alt: "Palm Kernel Oil Refining Process" },
+  { src: "/image/gallery6.jpg",         alt: "Premium Oil Palm Fruits" },
+  { src: "/image/gallery7.jpg",          alt: "Integrated Farm Landscape" },
+  { src: "/image/gallery8.jpg",alt: "Refined Palm Oil Packaging" },
 ]
 
 const nurseryImages = [
-  { src: "/image/nursery1.jpg", alt: "Oil Palm Seedlings — Early Stage Germination" },
-  { src: "/image/nursery2.jpg", alt: "Pre-Nursery Polybag Seedling Beds" },
-  { src: "/image/nursery3.jpg", alt: "Main Nursery Oil Palm Transplants" },
-  { src: "/image/nursery4.jpg", alt: "Irrigation System in Nursery" },
-  { src: "/image/nursery5.jpg", alt: "Healthy Seedling Quality Check" },
-  { src: "/image/nursery6.jpg", alt: "Cassava Stem Nursery Preparation" },
+  { src: "/image/oil-palm6.webp", alt: "Oil Palm Seedlings — Early Stage Germination" },
+  { src: "/image/seedbed.jpg", alt: "Pre-Nursery Polybag Seedling Beds" },
+  { src: "/image/plant.jpg", alt: "Main Nursery Oil Palm Transplants" },
+  { src: "/image/oil-palm.webp", alt: "Irrigation System in Nursery" },
+  { src: "/image/oil-palm1.webp", alt: "Healthy Seedling Quality Check" },
+  { src: "/image/oil-palm11.avif", alt: "Cassava Stem Nursery Preparation" },
 ]
 
 const nurseryStat = [

@@ -163,9 +163,8 @@ export default function Home() {
                   capable of delivering sustainable prosperity, food security, and long-term economic value.
                 </p>
                 <p>
-                  EMGO Farms began with 3 hectares of land, but our ambition stretches far beyond
-                  boundaries — cultivating over 10,000 high-yielding oil palm trees, establishing
-                  a modern refining plant, and building a complete end-to-end agricultural value chain.
+                  EMGO Farms began with 5 hectares of land, but our ambition stretches far beyond
+                  boundaries — cultivating over 50,000 high-yielding oil palm trees, establishing a modern Oil Palm refining plant, and building a complete end-to-end agricultural value chain.
                 </p>
                 <p>
                   We are also expanding into cassava cultivation for industrial starch, ginger,

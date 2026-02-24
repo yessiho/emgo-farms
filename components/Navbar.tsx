@@ -49,10 +49,10 @@ export const Navbar = () => {
               <Image
                 src="/image/logo02.png"
                 alt="Emgo Farms Logo"
-                width={180}          // Increased width
-                height={70}          // Increased height
+                width={240}          // Increased width
+                height={100}          // Increased height
                 priority
-                className="object-contain h-10 sm:h-12 md:h-14 lg:h-16" // responsive heights
+                className="object-contain h-14 sm:h-16 md:h-18 lg:h-20 w-auto drop-shadow-md" // responsive heights
               />
             </Link>
 

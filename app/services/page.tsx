@@ -9,7 +9,7 @@ const services = [
   {
     id: 1,
     title: "Oil Palm Farming",
-    image: "/image/service1.jpg",
+    image: "/image/gallery11.jpg",
     short: "Sustainable plantation management and premium oil palm cultivation.",
     details:
       "Our oil palm farming division operates large-scale plantations using advanced agronomic techniques and environmentally responsible practices. From seed selection and nursery development to harvesting and logistics, we implement precision agriculture methods that maximize yield while preserving soil health and biodiversity. Our farms integrate irrigation systems, pest management strategies, and data-driven crop monitoring to ensure consistent productivity and long-term sustainability.",
@@ -32,7 +32,7 @@ const services = [
   {
     id: 2,
     title: "Palm Oil Production",
-    image: "/image/service2.jpg",
+    image: "/image/gallery2.jpg",
     short: "Modern extraction and processing for premium-grade palm oil.",
     details:
       "Our palm oil production facilities are equipped with modern extraction and processing technology designed to deliver efficiency, purity, and quality consistency. We apply strict quality assurance protocols at every stage — from sterilization and threshing to pressing and clarification. Our processes meet international food safety standards and are optimized to maintain nutritional value while achieving maximum extraction efficiency.",
@@ -55,7 +55,7 @@ const services = [
   {
     id: 3,
     title: "Palm Kernel Oil Refining",
-    image: "/image/service3.jpg",
+    image: "/image/gallery8.jpg",
     short: "Refined palm kernel oil for food, cosmetic, and industrial sectors.",
     details:
       "Our palm kernel oil refining process ensures high-purity output suitable for diverse applications including food processing, cosmetics, pharmaceuticals, and biofuel production. Through controlled filtration, deodorization, and fractionation processes, we remove impurities while preserving functional properties. We maintain strict safety standards and laboratory testing to guarantee product integrity and performance reliability.",
@@ -93,7 +93,7 @@ export default function ServicesPage() {
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section
         className="relative h-60 sm:h-80 md:h-[400px] lg:h-[450px] bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: "url('/image/products-hero.jpg')" }}
+        style={{ backgroundImage: "url('/image/gallery6.jpg')" }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/90 via-green-800/70 to-orange-600/60" />
 
