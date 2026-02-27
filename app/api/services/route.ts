@@ -1,18 +1,17 @@
-import { NextResponse } from 'next/server'
-import { connectDB } from '../../../lib/mongodb'
+import clientPromise from '../../../lib/mongodb'
 import Product from '../../../models/Product'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    await connectDB()
+    const client = await clientPromise
+    const db = client.db("emgo-farms")
 
-    const services = await Product.find({ type: 'service' })
-    return NextResponse.json(services)
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json(
-      { message: 'Error fetching services' },
-      { status: 500 }
-    )
+    const products = await db.collection("products").find({}).toArray()
+
+    return NextResponse.json(products)
+  } catch (err) {
+    console.error("MongoDB Error:", err)
+    return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 })
   }
 }
