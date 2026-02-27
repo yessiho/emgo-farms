@@ -548,7 +548,7 @@ export default function AboutPage() {
               {
                 name:        "Mercy Godwin Udott",
                 credentials: "B.Sc",
-                image:       "/image/team.png",      // ← replace with real photo
+                image:       "/image/team4.jpeg",      // ← replace with real photo
               },
             ].map((founder, index) => (
               <motion.div
