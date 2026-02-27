@@ -127,7 +127,7 @@ export default function GalleryPage() {
           <div className="space-y-4 sm:space-y-5 text-left sm:text-center">
             {[
               "EMGO Farms and Integrated Services Limited operates from the fertile soils of Nsit Atai, Akwa Ibom State, Nigeria — building a scalable, technology-driven, and sustainability-focused agro-industrial enterprise.",
-              "Our long-term objective includes cultivating over 10,000 high-yield oil palm trees, establishing a modern palm oil and palm kernel oil refining plant, and developing a fully integrated value chain.",
+              "Our long-term objective includes cultivating over 50,000 high-yield oil palm trees, establishing a modern palm oil and palm kernel oil refining plant, and developing a fully integrated value chain.",
               "Beyond oil palm, our diversified ecosystem includes cassava cultivation for starch production, ginger and other cash crops, and sustainable animal husbandry — ensuring circular agriculture and long-term value creation.",
             ].map((text, i) => (
               <motion.p

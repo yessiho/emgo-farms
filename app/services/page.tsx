@@ -156,7 +156,7 @@ export default function ServicesPage() {
               className="text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed"
             >
               Founded in August 2020, EMGO Farms started with a small 4-acre farm in Ogun State and has expanded
-              to 5 hectares in Uyo, Akwa Ibom, aiming to plant 10,000 oil palms by 2030. We are committed to
+              to 5 hectares in Uyo, Akwa Ibom, aiming to plant 50,000 oil palms by 2030. We are committed to
               sustainable farming, eco-friendly production, and community empowerment.
             </motion.p>
             <motion.p
