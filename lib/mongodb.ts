@@ -1,23 +1,34 @@
 import { MongoClient } from "mongodb"
 
-const uri = process.env.MONGODB_URI
+const uri = process.env.MONGODB_URI as string
 
-console.log("ENV CHECK:", uri) // 👈 add this
+console.log("ENV CHECK:", uri ? "MONGODB_URI Loaded ✅" : "MISSING ❌")
 
 if (!uri) {
-  throw new Error("Please add MONGODB_URI to .env.local")
+  throw new Error("Please add MONGODB_URI to .env.local or Vercel Environment")
 }
 
-const client = new MongoClient(uri)
+const options = {
+  maxPoolSize: 10,
+  wtimeoutMS: 2500,
+  useUnifiedTopology: true,
+}
 
+let client: MongoClient
 let clientPromise: Promise<MongoClient>
 
+declare global {
+  var _mongoClientPromise: Promise<MongoClient> | undefined
+}
+
 if (process.env.NODE_ENV === "development") {
-  if (!(global as any)._mongoClientPromise) {
-    (global as any)._mongoClientPromise = client.connect()
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options)
+    global._mongoClientPromise = client.connect()
   }
-  clientPromise = (global as any)._mongoClientPromise
+  clientPromise = global._mongoClientPromise
 } else {
+  client = new MongoClient(uri, options)
   clientPromise = client.connect()
 }
 
