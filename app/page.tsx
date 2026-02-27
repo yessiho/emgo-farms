@@ -8,7 +8,7 @@ import { Hero } from '../components/Hero'
 import { FaWhatsapp } from 'react-icons/fa'
 
 // ── WhatsApp config ───────────────────────────────────────────
-const WHATSAPP_URL = `https://wa.me/2348033395971?text=${encodeURIComponent(
+const WHATSAPP_URL = `https://wa.me/2348166727320?text=${encodeURIComponent(
   "Hello EMGO Farms! I'd like to get in touch regarding your products and services."
 )}`
 
@@ -62,7 +62,7 @@ const services = [
   },
   {
     _id: 2,
-    title: "Palm Oil Production",
+    title: "Oil Palm Production",
     description:
       "Efficient palm oil extraction and processing with strict quality control, ensuring premium-grade output for local and international markets.",
     img: "/image/product2.jpg",
@@ -86,7 +86,7 @@ const whyUsItems = [
 ]
 
 const stats = [
-  { target: 10000, label: "Target Oil Palm Trees",    suffix: "+" },
+  { target: 50000, label: "Target Oil Palm Trees",    suffix: "+" },
   { target: 5,     label: "Hectares Developed",       suffix: "+" },
   { target: 3,     label: "Integrated Agro Segments", suffix: "+" },
   { target: 100,   label: "Sustainability Commitment",suffix: "%" },

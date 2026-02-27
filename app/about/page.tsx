@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { FaWhatsapp } from "react-icons/fa"
 
-const WHATSAPP_URL = `https://wa.me/2348033395971?text=${encodeURIComponent(
+const WHATSAPP_URL = `https://wa.me/2348166727320?text=${encodeURIComponent(
   "Hello EMGO Farms! I'd like to get in touch regarding your products and services."
 )}`
 
@@ -66,7 +66,7 @@ export default function AboutPage() {
                 EMGO Farms and Integrated Services Limited was founded on a simple but powerful belief: Agriculture should not merely produce crops — it should create prosperity, ensure food security, empower communities, and operate sustainably for generations.
               </p>
               <p>
-                We began with 3 hectares of land, but our ambition stretches far beyond boundaries. Our goal is clear: cultivate over 10,000 high-yielding oil palm trees, establish a modern palm oil and palm kernel oil refining plant, and develop a fully integrated agro value chain.
+                We began with 5 hectares of land, but our ambition stretches far beyond boundaries. Our goal is clear: cultivate over 50,000 high-yielding oil palm trees, establish a modern Crude Oil Palm (CPO) and palm kernel oil (PKO) refining plant, and develop a fully integrated agro value chain.
               </p>
               <p>
                 We are building an integrated agricultural ecosystem — including cassava cultivation, ginger and other cash crops, and sustainable animal husbandry — ensuring diversified income streams and circular agricultural practices.
@@ -308,6 +308,189 @@ export default function AboutPage() {
       </section>
 
 
+      {/* ── SDG SECTION ──────────────────────────────────────────
+          Mobile:  single column stacked
+          Tablet:  3-col SDG grid
+          Desktop: 4-col SDG grid + image card side by side
+      ──────────────────────────────────────────────────────── */}
+      <section className="py-14 sm:py-18 lg:py-28 bg-green-900 overflow-hidden relative">
+
+        {/* Background decorative circles */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-green-800 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-40 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-green-800 rounded-full translate-x-1/3 translate-y-1/3 opacity-40 pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 relative z-10">
+
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-10 sm:mb-14 lg:mb-20"
+          >
+            <span className="inline-block bg-white/10 border border-white/20 text-green-300 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-3 sm:mb-4">
+              Global Commitment
+            </span>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+              The 17 Sustainable Development Goals
+            </h2>
+            <p className="text-green-200 max-w-3xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed">
+              At EMGO Farms, we promote and integrate all 17 United Nations Sustainable Development Goals
+              into our operations — ensuring every action we take contributes to a better world for people,
+              planet, and prosperity.
+            </p>
+          </motion.div>
+
+          {/* SDG image + description two-column */}
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 items-center mb-12 sm:mb-16 lg:mb-20">
+
+            {/* SDG Image card */}
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9 }}
+              className="w-full lg:w-1/2 flex-shrink-0"
+            >
+              {/* ── Place your SDG image here ──
+                  Replace /image/YOUR_SDG_IMAGE.jpg with your actual path
+                  e.g. /image/sdg-goals.jpg
+              ── */}
+              <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border-2 border-white/20 aspect-square sm:aspect-[4/3] lg:aspect-square">
+                <Image
+                  src="/image/goals.jpeg"
+                  alt="UN Sustainable Development Goals — EMGO Farms"
+                  fill
+                  className="object-cover object-center"
+                />
+                {/* Overlay label */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-5 py-4">
+                  <p className="text-white font-bold text-sm sm:text-base">🌍 UN SDGs — Our Global Framework</p>
+                  <p className="text-green-300 text-xs mt-0.5">Integrated into every EMGO operation</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right text */}
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9 }}
+              className="w-full lg:w-1/2 text-white"
+            >
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-5 leading-tight">
+                Building a Sustainable Future,<br />
+                <span className="text-orange-400">One Goal at a Time</span>
+              </h3>
+              <div className="space-y-3 sm:space-y-4 text-green-100 text-sm sm:text-base leading-relaxed">
+                <p>
+                  The United Nations' 17 Sustainable Development Goals provide the global blueprint
+                  for a more equitable, sustainable, and prosperous world by 2030. At EMGO Farms,
+                  these goals are not aspirational posters on a wall — they are embedded in our
+                  daily operations, investment decisions, and community programs.
+                </p>
+                <p>
+                  From <span className="text-orange-300 font-semibold">Zero Hunger (SDG 2)</span> through
+                  our food security programs, to <span className="text-orange-300 font-semibold">Decent Work (SDG 8)</span> through
+                  local employment, to <span className="text-orange-300 font-semibold">Climate Action (SDG 13)</span> through
+                  our no-deforestation and biomass energy policies — every EMGO initiative maps
+                  to measurable SDG outcomes.
+                </p>
+                <p>
+                  We track our SDG performance annually and report transparently to investors,
+                  partners, and the communities we serve.
+                </p>
+              </div>
+
+              {/* SDG highlights strip */}
+              <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                {[
+                  { num: "SDG 1",  label: "No Poverty",          color: "bg-red-600"     },
+                  { num: "SDG 2",  label: "Zero Hunger",         color: "bg-yellow-500"  },
+                  { num: "SDG 5",  label: "Gender Equality",     color: "bg-orange-500"  },
+                  { num: "SDG 8",  label: "Decent Work",         color: "bg-red-700"     },
+                  { num: "SDG 13", label: "Climate Action",      color: "bg-green-600"   },
+                  { num: "SDG 15", label: "Life on Land",        color: "bg-green-700"   },
+                ].map((sdg, i) => (
+                  <div key={i} className={`${sdg.color} rounded-xl px-3 py-2.5 text-white text-center`}>
+                    <p className="text-[10px] sm:text-xs font-bold opacity-80">{sdg.num}</p>
+                    <p className="text-[10px] sm:text-xs font-semibold leading-tight mt-0.5">{sdg.label}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* All 17 SDGs grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mb-10 sm:mb-12"
+          >
+            <p className="text-center text-green-300 text-xs sm:text-sm font-semibold uppercase tracking-widest mb-6 sm:mb-8">
+              All 17 SDGs — How EMGO Contributes
+            </p>
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
+              {[
+                { num: 1,  label: "No Poverty",                    color: "bg-red-600",      icon: "🏠" },
+                { num: 2,  label: "Zero Hunger",                   color: "bg-yellow-500",   icon: "🌾" },
+                { num: 3,  label: "Good Health",                   color: "bg-green-500",    icon: "❤️" },
+                { num: 4,  label: "Quality Education",             color: "bg-red-500",      icon: "📚" },
+                { num: 5,  label: "Gender Equality",               color: "bg-orange-500",   icon: "⚖️" },
+                { num: 6,  label: "Clean Water",                   color: "bg-blue-500",     icon: "💧" },
+                { num: 7,  label: "Clean Energy",                  color: "bg-yellow-400",   icon: "☀️" },
+                { num: 8,  label: "Decent Work",                   color: "bg-red-700",      icon: "📈" },
+                { num: 9,  label: "Innovation",                    color: "bg-orange-600",   icon: "🏭" },
+                { num: 10, label: "Reduced Inequalities",          color: "bg-pink-600",     icon: "🤝" },
+                { num: 11, label: "Sustainable Cities",            color: "bg-orange-400",   icon: "🏙️" },
+                { num: 12, label: "Responsible Consumption",       color: "bg-yellow-600",   icon: "♻️" },
+                { num: 13, label: "Climate Action",                color: "bg-green-700",    icon: "🌍" },
+                { num: 14, label: "Life Below Water",              color: "bg-blue-600",     icon: "🐟" },
+                { num: 15, label: "Life on Land",                  color: "bg-green-600",    icon: "🌿" },
+                { num: 16, label: "Peace & Justice",               color: "bg-blue-700",     icon: "🕊️" },
+                { num: 17, label: "Partnerships",                  color: "bg-blue-800",     icon: "🌐" },
+              ].map((sdg, idx) => (
+                <motion.div
+                  key={sdg.num}
+                  initial={{ scale: 0.85, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.04 }}
+                  className={`${sdg.color} rounded-xl p-2.5 sm:p-3 lg:p-4 text-white text-center hover:scale-105 hover:shadow-xl transition-all duration-200 cursor-default`}
+                >
+                  <p className="text-lg sm:text-2xl mb-1">{sdg.icon}</p>
+                  <p className="text-[9px] sm:text-[10px] font-bold opacity-80 mb-0.5">SDG {sdg.num}</p>
+                  <p className="text-[9px] sm:text-[10px] font-semibold leading-tight">{sdg.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Bottom SDG commitment statement */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl px-6 sm:px-10 py-6 sm:py-8 text-center"
+          >
+            <p className="text-white font-bold text-sm sm:text-lg lg:text-xl mb-2">
+              🌱 EMGO Farms is proud to be an SDG-aligned agro-industrial enterprise.
+            </p>
+            <p className="text-green-200 text-xs sm:text-sm lg:text-base max-w-3xl mx-auto leading-relaxed">
+              We measure our success not only in financial returns but in our positive contribution
+              to people, planet, and prosperity — the three pillars of the 2030 Agenda for Sustainable Development.
+            </p>
+          </motion.div>
+
+        </div>
+      </section>
+
+
       {/* ── FOUNDERS SECTION ─────────────────────────────────────
           Mobile:  1-column cards
           Tablet+: 2-column cards
@@ -337,14 +520,37 @@ export default function AboutPage() {
             </div>
           </motion.div>
 
-          {/* 1-col mobile → 2-col sm+ */}
+          {/* 1-col mobile → 2-col sm+
+              ── Each founder has their OWN image ──
+              Replace each src with the correct photo path:
+                emmanuel → /image/emmanuel.jpg  (or .png / .webp)
+                godwin   → /image/godwin.jpg
+                ifeoma   → /image/ifeoma.jpg
+                mercy    → /image/mercy.jpg
+          */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-12">
             {[
-              "Emmanuel F Obasi (M.Eng, B.Eng, FNES)",
-              "Godwin Udott (HND, PMP)",
-              "Ifeoma Emma-Obasi (M.Sc, HND)",
-              "Mercy Godwin Udott (B.Sc)",
-            ].map((name, index) => (
+              {
+                name:        "Emmanuel F Obasi",
+                credentials: "M.Eng, B.Eng, FNES",
+                image:       "/image/Team2.jpeg",   // ← replace with real photo
+              },
+              {
+                name:        "Godwin Udott",
+                credentials: "HND, PMP",
+                image:       "/image/team3.jpeg",     // ← replace with real photo
+              },
+              {
+                name:        "Ifeoma Emma-Obasi",
+                credentials: "M.Sc, HND",
+                image:       "/image/Team1.jpeg",     // ← replace with real photo
+              },
+              {
+                name:        "Mercy Godwin Udott",
+                credentials: "B.Sc",
+                image:       "/image/team0.png",      // ← replace with real photo
+              },
+            ].map((founder, index) => (
               <motion.div
                 key={index}
                 initial={{ y: 40, opacity: 0 }}
@@ -353,11 +559,19 @@ export default function AboutPage() {
                 transition={{ duration: 0.7, delay: index * 0.1 }}
                 className="bg-green-50 rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="relative h-56 sm:h-68 lg:h-80 w-full">
-                  <Image src="/image/oil-palm7.avif" alt={name} fill className="object-cover" />
+                <div className="relative h-72 sm:h-80 lg:h-96 w-full">
+                  <Image
+                    src={founder.image}
+                    alt={founder.name}
+                    fill
+                    className="object-cover object-top"
+                  />
                 </div>
                 <div className="p-5 sm:p-7 lg:p-10">
-                  <h3 className="text-base sm:text-xl lg:text-2xl font-bold text-green-800 mb-1">{name}</h3>
+                  <h3 className="text-base sm:text-xl lg:text-2xl font-bold text-green-800 mb-0.5">
+                    {founder.name}
+                  </h3>
+                  <p className="text-gray-400 text-xs sm:text-sm mb-1">{founder.credentials}</p>
                   <p className="text-orange-600 font-semibold text-xs sm:text-sm lg:text-base">Co-Founder</p>
                 </div>
               </motion.div>
@@ -624,19 +838,19 @@ export default function AboutPage() {
 
       {/* QUOTE IMAGE SECTION */}
       <section className="py-12 sm:py-16 lg:py-20 bg-green-50">
-        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10">
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 flex justify-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.9 }}
-            className="relative w-full mx-auto rounded-3xl overflow-hidden shadow-2xl border border-green-100 
-                 h-[500px] sm:h-[600px] lg:h-[920px]"
+            className="rounded-3xl overflow-hidden shadow-2xl border border-green-100"
           >
             <Image
               src="/image/think.jpeg"
               alt="EMGO Farms Quote"
-              fill
+              width={500}
+              height={500}
               className="object-cover object-center"
             />
           </motion.div>
@@ -668,9 +882,7 @@ export default function AboutPage() {
               <span className="text-orange-500"> in Our Host Community</span>
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed">
-              At EMGO Farms, we believe that true agricultural success is measured not only in harvests,
-              but in the lives we uplift. We are deeply committed to the welfare of women and children
-              in Nsit Atai and across our host communities in Akwa Ibom State.
+              At EMGO Farms, we believe that true agricultural success is measured not only in harvest, but in the lives we uplift.  We are deeply committed to the welfare of women, men and children in Nsit Atai and across all our hosts communities in Akwa Ibom State and beyond.
             </p>
           </motion.div>
 
@@ -686,7 +898,7 @@ export default function AboutPage() {
               className="w-full lg:w-1/2 relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] flex-shrink-0"
             >
               <Image
-                src="/image/picture1.jpg"
+                src="/image/story3.jpg"
                 alt="EMGO Farms Community Support — Women and Children"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-700"
@@ -715,7 +927,7 @@ export default function AboutPage() {
                 <p>
                   We champion programs that place women at the forefront of agricultural value chains,
                   providing skills training, economic inclusion, and leadership opportunities.
-                  Women in our communities are not just beneficiaries — they are active partners in
+                  Men and Women in our communities are not just beneficiaries — they are active partners in
                   building EMGO's agro-industrial future.
                 </p>
                 <p>
@@ -727,7 +939,7 @@ export default function AboutPage() {
               {/* Stats row */}
               <div className="mt-7 sm:mt-8 grid grid-cols-3 gap-3 sm:gap-5">
                 {[
-                  { value: "200+", label: "Women Empowered" },
+                  { value: "100+", label: "Young & Elderly men empowered" },
                   { value: "500+", label: "Children Supported" },
                   { value: "5+",   label: "Community Programs" },
                 ].map((stat, i) => (

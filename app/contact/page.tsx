@@ -7,7 +7,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 
 // ── WhatsApp config ──────────────────────────────────────────
-const WHATSAPP_NUMBER  = "2348033395971"
+const WHATSAPP_NUMBER  = "2348166727320"
 const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hello EMGO Farms! I'd like to get in touch regarding your products and services."
 )
@@ -99,7 +99,7 @@ export default function ContactPage() {
             <span className="text-xs font-semibold">WhatsApp</span>
           </a>
           <a
-            href="tel:+2348033395971"
+            href="tel:+2348166727320"
             className="flex-1 flex flex-col items-center gap-1 py-4 text-green-700 hover:bg-green-50 transition"
           >
             <Phone size={20} />
@@ -186,7 +186,7 @@ export default function ContactPage() {
                     <div className="space-y-1.5">
                       {[
                         { display: "+234 813 135 0333", tel: "+2348131350333", wa: `https://wa.me/2348131350333?text=${WHATSAPP_MESSAGE}` },
-                        { display: "+234 803 396 8137", tel: "+2348033968137", wa: `https://wa.me/2348033968137?text=${WHATSAPP_MESSAGE}` },
+                        { display: "+234 816 672 7320", tel: "+2348166727320", wa: `https://wa.me/2348166727320?text=${WHATSAPP_MESSAGE}` },
                       ].map((num) => (
                         <a
                           key={num.tel}

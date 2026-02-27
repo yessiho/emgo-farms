@@ -11,11 +11,11 @@ const galleryImages = [
   { src: "/image/oil-palm9.jpg",          alt: "Oil Palm Plantation - Nsit Atai" },
   { src: "/image/gallery2.jpg",              alt: "High-Yield Oil Palm Trees" },
   { src: "/image/gallery3.jpg",              alt: "Fresh Fruit Bunch Harvesting" },
-  { src: "/image/gallery4.jpg",              alt: "Palm Oil Processing Unit" },
+  { src: "/image/galler1.jpeg",              alt: "Palm Oil Processing Unit" },
   { src: "/image/gallery5.jpg",              alt: "Palm Kernel Oil Refining Process" },
   { src: "/image/gallery6.jpg",         alt: "Premium Oil Palm Fruits" },
   { src: "/image/gallery7.jpg",          alt: "Integrated Farm Landscape" },
-  { src: "/image/gallery8.jpg",alt: "Refined Palm Oil Packaging" },
+  { src: "/image/galler2.jpeg",alt: "Refined Palm Oil Packaging" },
 ]
 
 const nurseryImages = [

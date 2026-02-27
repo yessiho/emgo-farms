@@ -16,11 +16,15 @@ import {
 } from "react-icons/fa"
 
 // ── Config ────────────────────────────────────────────────────
-const WHATSAPP_NUMBER  = "2348033395971"
+const WHATSAPP_NUMBER  = "2348166727320"
 const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hello EMGO Farms! I'd like to get in touch regarding your products and services."
 )
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
+
+// ── Both phone numbers link directly to WhatsApp ──────────────
+const PHONE_1 = { display: "08131350333", wa: `https://wa.me/2348131350333?text=${WHATSAPP_MESSAGE}` }
+const PHONE_2 = { display: "08166727320", wa: `https://wa.me/2348166727320?text=${WHATSAPP_MESSAGE}` }
 
 const navLinks = [
   { label: "Home",     href: "/" },
@@ -87,16 +91,11 @@ export const Footer = () => {
         {/* ── BRAND STRIP ─────────────────────────────────────── */}
         <div className="relative border-b border-white/10">
           <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-6 sm:py-8">
-
             <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 flex-wrap">
 
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 text-center sm:text-left">
-  
-                {/* ✅ Updated Logo Background */}
                 <div className="relative flex-shrink-0 group">
-                  
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 rounded-2xl blur-md opacity-60 group-hover:opacity-80 transition-all duration-300"></div>
-
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 rounded-2xl blur-md opacity-60 group-hover:opacity-80 transition-all duration-300" />
                   <div className="relative bg-white/90 backdrop-blur-md border border-white/30 rounded-2xl px-4 py-2.5 shadow-xl group-hover:shadow-2xl transition-all duration-300">
                     <Image
                       src="/image/logo02.png"
@@ -106,21 +105,16 @@ export const Footer = () => {
                       className="object-contain h-8 sm:h-9 w-auto"
                     />
                   </div>
-
                 </div>
-
                 <div>
-                  <h3 className="text-base sm:text-xl font-bold tracking-wide">
-                    EMGO Farms
-                  </h3>
+                  <h3 className="text-base sm:text-xl font-bold tracking-wide">EMGO Farms</h3>
                   <p className="text-gray-300 text-xs sm:text-sm mt-0.5 max-w-xs">
                     Building Nigeria's agro-industrial future, one harvest at a time.
                   </p>
                 </div>
-
               </div>
 
-              {/* Social icons — responsive wrap */}
+              {/* Social icons */}
               <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center sm:justify-end">
                 {socialLinks.map(({ Icon, href, label, whatsapp }) => (
                   <a
@@ -157,7 +151,6 @@ export const Footer = () => {
               enterprise cultivating oil palm, cassava, and other cash crops in Nsit Atai,
               Akwa Ibom State — delivering sustainable value from farm to shelf.
             </p>
-
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -174,7 +167,6 @@ export const Footer = () => {
             <h4 className="text-xs sm:text-sm font-bold mb-4 text-orange-400 uppercase tracking-widest">
               Company
             </h4>
-
             <ul className="grid grid-cols-2 sm:grid-cols-1 gap-x-4 gap-y-2 sm:gap-y-2.5">
               {navLinks.map(({ label, href }) => (
                 <li key={label}>
@@ -198,6 +190,7 @@ export const Footer = () => {
 
             <div className="space-y-2.5 sm:space-y-3">
 
+              {/* Email */}
               <a href="mailto:emgo@gmail.com" className="flex items-start gap-3 group">
                 <span className="mt-0.5 p-1.5 sm:p-2 rounded-lg bg-white/10 group-hover:bg-orange-500 transition flex-shrink-0">
                   <FaEnvelope size={11} className="text-orange-400 group-hover:text-white transition" />
@@ -207,32 +200,34 @@ export const Footer = () => {
                 </span>
               </a>
 
+              {/* Phone numbers — both link to WhatsApp */}
               <div className="flex items-start gap-3">
                 <span className="mt-0.5 p-1.5 sm:p-2 rounded-lg bg-white/10 flex-shrink-0">
                   <FaPhoneAlt size={11} className="text-orange-400" />
                 </span>
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <a
-                    href={`https://wa.me/2348033395971?text=${WHATSAPP_MESSAGE}`}
+                    href={PHONE_1.wa}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-gray-300 hover:text-[#25D366] text-xs sm:text-sm transition-colors"
                   >
                     <FaWhatsapp size={11} className="text-[#25D366] flex-shrink-0" />
-                    +234 803 339 5971
+                    {PHONE_1.display}
                   </a>
                   <a
-                    href={`https://wa.me/2348033968137?text=${WHATSAPP_MESSAGE}`}
+                    href={PHONE_2.wa}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-gray-300 hover:text-[#25D366] text-xs sm:text-sm transition-colors"
                   >
                     <FaWhatsapp size={11} className="text-[#25D366] flex-shrink-0" />
-                    +234 813 135 0333
+                    {PHONE_2.display}
                   </a>
                 </div>
               </div>
 
+              {/* Chat on WhatsApp row */}
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
@@ -247,6 +242,7 @@ export const Footer = () => {
                 </span>
               </a>
 
+              {/* Address */}
               <div className="flex items-start gap-3">
                 <span className="mt-0.5 p-1.5 sm:p-2 rounded-lg bg-white/10 flex-shrink-0">
                   <FaMapMarkerAlt size={11} className="text-orange-400" />
@@ -285,7 +281,6 @@ export const Footer = () => {
               >
                 {loading ? "Subscribing…" : "Subscribe →"}
               </button>
-
               {success && (
                 <p className="flex items-center gap-1.5 text-green-400 text-xs sm:text-sm">
                   <span>✓</span> Successfully subscribed!

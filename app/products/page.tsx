@@ -120,7 +120,7 @@ export default function ProductsPage() {
               EMGO Farms is a growth-driven agro-industrial enterprise strategically positioned
               in Nsit Atai, Akwa Ibom State. What began as a modest agricultural initiative
               has evolved into an integrated ecosystem with a clear ambition — to cultivate
-              over 10,000 high-yield oil palm trees and establish modern refining facilities
+              over 50,000 high-yield oil palm trees and establish modern refining facilities
               that control the entire value chain.
             </motion.p>
 
