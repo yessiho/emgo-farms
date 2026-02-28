@@ -528,7 +528,7 @@ export default function AboutPage() {
                 ifeoma   → /image/ifeoma.jpg
                 mercy    → /image/mercy.jpg
           */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-12git">
             {[
               {
                 name:        "Emmanuel F Obasi",
@@ -543,7 +543,7 @@ export default function AboutPage() {
               {
                 name:        "Ifeoma Emma-Obasi",
                 credentials: "M.Sc, HND",
-                image:       "/image/Team1.jpeg",     // ← replace with real photo
+                image:       "/image/team5.jpeg",     // ← replace with real photo
               },
               {
                 name:        "Mercy Godwin Udott",
