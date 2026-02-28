@@ -2,19 +2,19 @@
   "name": "emgo-farms",
   "version": "0.1.0",
   "private": true,
- "scripts": {
-  "dev": "SET NODE_OPTIONS=--openssl-legacy-provider && next dev",
-  "build": "next build",
-  "start": "next start"
-},
+  "scripts": {
+    "dev": "SET NODE_OPTIONS=--openssl-legacy-provider && next dev",
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
     "@portabletext/react": "^6.0.2",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.3.1",
     "framer-motion": "^12.34.2",
     "lucide-react": "^0.574.0",
-    "mongodb": "^7.1.0",
-    "mongoose": "^9.2.1",
+    "mongodb": "^6.21.0",
+    "mongoose": "^8.23.0",
     "next": "16.1.6",
     "next-auth": "^4.24.13",
     "nodemailer": "^7.0.13",

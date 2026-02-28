@@ -2,8 +2,8 @@ const { MongoClient } = require("mongodb")
 const bcrypt = require("bcryptjs")
 require("dotenv").config({ path: ".env.local" })
 
-const ADMIN_USERNAME = "emgoadmin"
-const ADMIN_PASSWORD = "EmgoFarms2024!"
+const ADMIN_USERNAME = "yessihopeterongbem53_db_user"
+const ADMIN_PASSWORD = "Emgo12345"
 const ADMIN_NAME     = "Emmanuel Obasi"
 
 async function createAdmin() {
