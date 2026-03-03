@@ -12,6 +12,8 @@ import {
   ToggleLeft, ToggleRight, Shield,
 } from "lucide-react"
 
+type ProductStatus = "active" | "inactive"
+
 interface Product {
   id:          string
   name:        string
@@ -19,10 +21,21 @@ interface Product {
   price:       string
   unit:        string
   description: string
-  status:      "active" | "inactive"
+  status:      ProductStatus
   in_stock:    boolean
   image_url:   string
   created_at:  string
+}
+
+interface FormState {
+  name:        string
+  category:    string
+  price:       string
+  unit:        string
+  description: string
+  status:      ProductStatus
+  in_stock:    boolean
+  image_url:   string
 }
 
 const CATEGORIES = [
@@ -56,9 +69,9 @@ const CAT_COLOR: Record<string, string> = {
   "Other":                     "bg-gray-100 text-gray-600",
 }
 
-const EMPTY = {
+const EMPTY: FormState = {
   name: "", category: CATEGORIES[0], price: "", unit: "per litre",
-  description: "", status: "active" as const, in_stock: true, image_url: "",
+  description: "", status: "active", in_stock: true, image_url: "",
 }
 
 function timeAgo(iso: string) {
@@ -70,17 +83,17 @@ function timeAgo(iso: string) {
 
 export default function AdminProductsPage() {
   const router = useRouter()
-  const [products,  setProducts]  = useState<Product[]>([])
-  const [loading,   setLoading]   = useState(true)
-  const [search,    setSearch]    = useState("")
-  const [modal,     setModal]     = useState(false)
-  const [editing,   setEditing]   = useState<Product | null>(null)
-  const [form,      setForm]      = useState({ ...EMPTY })
-  const [saving,    setSaving]    = useState(false)
-  const [deleting,  setDeleting]  = useState<string | null>(null)
-  const [toast,     setToast]     = useState<{ msg: string; type: "success" | "error" } | null>(null)
-  const [user,      setUser]      = useState<any>(null)
-  const [signingOut,setSigningOut]= useState(false)
+  const [products,   setProducts]   = useState<Product[]>([])
+  const [loading,    setLoading]    = useState(true)
+  const [search,     setSearch]     = useState("")
+  const [modal,      setModal]      = useState(false)
+  const [editing,    setEditing]    = useState<Product | null>(null)
+  const [form,       setForm]       = useState<FormState>({ ...EMPTY })
+  const [saving,     setSaving]     = useState(false)
+  const [deleting,   setDeleting]   = useState<string | null>(null)
+  const [toast,      setToast]      = useState<{ msg: string; type: "success" | "error" } | null>(null)
+  const [user,       setUser]       = useState<any>(null)
+  const [signingOut, setSigningOut] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -107,8 +120,16 @@ export default function AdminProductsPage() {
 
   const openEdit = (p: Product) => {
     setEditing(p)
-    setForm({ name: p.name, category: p.category, price: p.price, unit: p.unit,
-      description: p.description, status: p.status, in_stock: p.in_stock, image_url: p.image_url ?? "" })
+    setForm({
+      name:        p.name,
+      category:    p.category,
+      price:       p.price,
+      unit:        p.unit,
+      description: p.description,
+      status:      p.status as ProductStatus,
+      in_stock:    p.in_stock,
+      image_url:   p.image_url ?? "",
+    })
     setModal(true)
   }
 
@@ -215,7 +236,6 @@ export default function AdminProductsPage() {
       {/* ── MAIN ── */}
       <main className="flex-1 md:ml-64 lg:ml-72 flex flex-col min-h-screen">
 
-        {/* Top bar */}
         <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-gray-100 px-5 sm:px-8 py-4 flex items-center justify-between gap-4 shadow-sm">
           <div>
             <h1 className="text-base sm:text-lg font-bold text-gray-900">Products</h1>
@@ -238,15 +258,14 @@ export default function AdminProductsPage() {
           </div>
         </header>
 
-        {/* Content */}
         <div className="flex-1 px-5 sm:px-8 py-8 space-y-6">
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-3 sm:gap-4">
             {[
-              { label: "Total",      value: products.length,                                  color: "bg-green-800"   },
-              { label: "Active",     value: products.filter(p => p.status === "active").length,   color: "bg-orange-500"  },
-              { label: "In Stock",   value: products.filter(p => p.in_stock).length,              color: "bg-emerald-600" },
+              { label: "Total",    value: products.length,                                    color: "bg-green-800"   },
+              { label: "Active",   value: products.filter(p => p.status === "active").length, color: "bg-orange-500"  },
+              { label: "In Stock", value: products.filter(p => p.in_stock).length,            color: "bg-emerald-600" },
             ].map(({ label, value, color }) => (
               <div key={label} className={`${color} rounded-2xl p-4 sm:p-5 text-white text-center shadow-lg`}>
                 <p className="text-2xl sm:text-3xl font-bold">{value}</p>
@@ -255,7 +274,7 @@ export default function AdminProductsPage() {
             ))}
           </div>
 
-          {/* Products grid */}
+          {/* Grid */}
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[1,2,3,4,5,6].map(i => (
@@ -271,7 +290,7 @@ export default function AdminProductsPage() {
             <div className="bg-white rounded-2xl border border-gray-100 py-20 text-center text-gray-400 shadow-sm">
               <Package size={36} className="mx-auto mb-3 opacity-20" />
               <p className="text-sm font-semibold">No products yet</p>
-              <p className="text-xs mt-1 text-gray-400">Click "Add Product" to get started</p>
+              <p className="text-xs mt-1">Click "Add Product" to get started</p>
               <button onClick={openCreate}
                 className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-semibold transition">
                 <Plus size={14} /> Add First Product
@@ -281,8 +300,6 @@ export default function AdminProductsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((product) => (
                 <div key={product.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-all duration-200 group">
-
-                  {/* Header */}
                   <div className="flex items-start justify-between gap-2 mb-3">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-sm font-bold text-gray-800 truncate">{product.name}</h3>
@@ -299,34 +316,27 @@ export default function AdminProductsPage() {
                       </span>
                     </div>
                   </div>
-
-                  {/* Price */}
                   {product.price && (
                     <p className="text-sm font-bold text-orange-500 mb-2">
                       ₦{product.price} <span className="text-xs text-gray-400 font-normal">{product.unit}</span>
                     </p>
                   )}
-
-                  {/* Description */}
                   {product.description && (
                     <p className="text-xs text-gray-500 leading-relaxed line-clamp-2 mb-3">{product.description}</p>
                   )}
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-gray-50 mt-auto">
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-50">
                     <span className="text-[10px] text-gray-400">{timeAgo(product.created_at)}</span>
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button onClick={() => openEdit(product)}
-                        className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition" title="Edit">
+                        className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-blue-600 transition">
                         <Pencil size={13} />
                       </button>
                       <button onClick={() => handleDelete(product.id)} disabled={deleting === product.id}
-                        className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition disabled:opacity-50" title="Delete">
+                        className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition disabled:opacity-50">
                         <Trash2 size={13} />
                       </button>
                     </div>
                   </div>
-
                 </div>
               ))}
             </div>
@@ -338,7 +348,6 @@ export default function AdminProductsPage() {
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
               <div>
                 <h2 className="text-base font-bold text-gray-900">{editing ? "Edit Product" : "Add New Product"}</h2>
@@ -350,8 +359,6 @@ export default function AdminProductsPage() {
             </div>
 
             <div className="px-6 py-5 space-y-4">
-
-              {/* Name */}
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">Product Name *</label>
                 <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
@@ -359,7 +366,6 @@ export default function AdminProductsPage() {
                   className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 transition" />
               </div>
 
-              {/* Category */}
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">Category *</label>
                 <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
@@ -368,7 +374,6 @@ export default function AdminProductsPage() {
                 </select>
               </div>
 
-              {/* Price + Unit */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1.5">Price (₦)</label>
@@ -385,11 +390,11 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              {/* Status + Stock */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1.5">Status</label>
-                  <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value as "active" | "inactive" }))}
+                  <select value={form.status}
+                    onChange={e => setForm(f => ({ ...f, status: e.target.value as ProductStatus }))}
                     className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 transition bg-white">
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -406,14 +411,12 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              {/* Description */}
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1.5">Description</label>
                 <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   placeholder="Describe the product…" rows={3}
                   className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 transition resize-none" />
               </div>
-
             </div>
 
             <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100">
@@ -426,14 +429,13 @@ export default function AdminProductsPage() {
                 {saving ? "Saving…" : editing ? "Update Product" : "Add Product"}
               </button>
             </div>
-
           </div>
         </div>
       )}
 
       {/* ── TOAST ── */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl shadow-xl text-white text-sm font-semibold flex items-center gap-2 transition-all ${
+        <div className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-2xl shadow-xl text-white text-sm font-semibold flex items-center gap-2 ${
           toast.type === "success" ? "bg-green-600" : "bg-red-500"
         }`}>
           {toast.type === "success" ? <CheckCircle size={16} /> : <X size={16} />}
