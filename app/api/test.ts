@@ -1,21 +1,26 @@
-import clientPromise from "@/lib/mongodb"
+// app/api/test/route.ts
 import { NextResponse } from "next/server"
+import { supabaseAdmin } from "@/lib/supabase"
 
 export async function GET() {
   try {
-    const client = await clientPromise
-    const db = client.db("emgo-farms")
-    await db.command({ ping: 1 })
+    const { data, error } = await supabaseAdmin
+      .from("products")
+      .select("id", { count: "exact", head: true })
+
+    if (error) throw new Error(error.message)
 
     return NextResponse.json({
       success: true,
-      message: "MongoDB Connected Successfully ✅",
+      message: "Supabase Connected Successfully ✅",
+      url:     process.env.NEXT_PUBLIC_SUPABASE_URL,
     })
-  } catch (err) {
-    console.error("MongoDB Error:", err)
+  } catch (err: any) {
+    console.error("Supabase Error:", err.message)
     return NextResponse.json({
       success: false,
-      message: "MongoDB Connection Failed ❌",
+      message: "Supabase Connection Failed ❌",
+      error:   err.message,
     }, { status: 500 })
   }
 }

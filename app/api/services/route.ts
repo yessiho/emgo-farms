@@ -1,17 +1,20 @@
-import clientPromise from '../../../lib/mongodb'
-import Product from '../../../models/Product'
-import { NextResponse } from 'next/server'
+// app/api/services/route.ts
+import { NextResponse } from "next/server"
+import { supabaseAdmin } from "@/lib/supabase"
 
 export async function GET() {
   try {
-    const client = await clientPromise
-    const db = client.db("emgo-farms")
+    const { data, error } = await supabaseAdmin
+      .from("products")
+      .select("*")
+      .eq("status", "active")
+      .order("created_at", { ascending: false })
 
-    const products = await db.collection("products").find({}).toArray()
+    if (error) throw new Error(error.message)
 
-    return NextResponse.json(products)
-  } catch (err) {
-    console.error("MongoDB Error:", err)
+    return NextResponse.json(data)
+  } catch (err: any) {
+    console.error("Supabase Error:", err.message)
     return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 })
   }
 }
