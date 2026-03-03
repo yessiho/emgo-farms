@@ -1,49 +1,18 @@
 // app/api/newsletter/route.ts
-// ─────────────────────────────────────────────────────────────
-// POST /api/newsletter
-// Saves newsletter subscriptions to MongoDB "newsletter" collection.
-// Prevents duplicate emails.
-// ─────────────────────────────────────────────────────────────
-
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import { createClient } from "@supabase/supabase-js"
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export async function POST(req: Request) {
-  try {
-    const body = await req.json()
-    const { email } = body
-
-    if (!email || !email.includes("@")) {
-      return NextResponse.json(
-        { error: "A valid email address is required." },
-        { status: 400 }
-      )
-    }
-
-    const client = await clientPromise
-    const db = client.db("emgo-farms")
-
-    // Check for duplicate
-    const existing = await db.collection("newsletter").findOne({ email })
-    if (existing) {
-      return NextResponse.json(
-        { error: "This email is already subscribed." },
-        { status: 409 }
-      )
-    }
-
-    await db.collection("newsletter").insertOne({
-      email,
-      createdAt: new Date(),
-    })
-
-    return NextResponse.json({ success: true })
-
-  } catch (error) {
-    console.error("Newsletter error:", error)
-    return NextResponse.json(
-      { error: "Failed to subscribe. Please try again." },
-      { status: 500 }
-    )
-  }
+  const { email } = await req.json()
+  if (!email) return NextResponse.json({ error: "Email required" }, { status: 400 })
+  const { error } = await supabase.from("newsletter").insert({ email })
+  if (error?.code === "23505")
+    return NextResponse.json({ error: "Already subscribed" }, { status: 409 })
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json({ success: true })
 }

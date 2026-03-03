@@ -257,6 +257,9 @@ export const Footer = () => {
           </div>
 
           {/* ── 4. Newsletter ── */}
+          await supabase.from("subscribers").insert([
+           { email }
+        ])
           <div>
             <h4 className="text-xs sm:text-sm font-bold mb-4 text-orange-400 uppercase tracking-widest">
               Newsletter

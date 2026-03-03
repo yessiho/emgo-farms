@@ -1,77 +1,33 @@
 // app/api/admin/stats/route.ts
-// ─────────────────────────────────────────────────────────────
-// GET /api/admin/stats
-// Returns dashboard counts + recent contacts/products/subscribers
-// ─────────────────────────────────────────────────────────────
-
 import { NextResponse } from "next/server"
-import clientPromise from "@/lib/mongodb"
+import { createClient } from "@supabase/supabase-js"
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export async function GET() {
   try {
-    const client = await clientPromise
-    const db = client.db("emgo-farms") // your DB name
-
-    // Run counts in parallel for better performance
-    const [
-      totalContacts,
-      totalSubscribers,
-      totalProducts,
-    ] = await Promise.all([
-      db.collection("contacts").countDocuments(),
-      db.collection("newsletter").countDocuments(),
-      db.collection("products").countDocuments(),
-    ])
-
-    // Recent contacts
-    const recentContacts = await db
-      .collection("contacts")
-      .find({})
-      .sort({ createdAt: -1 })
-      .limit(5)
-      .project({
-        name: 1,
-        email: 1,
-        message: 1,
-        service: 1,
-        createdAt: 1,
-      })
-      .toArray()
-
-    // Recent newsletter subscribers
-    const recentSubscribers = await db
-      .collection("newsletter")
-      .find({})
-      .sort({ createdAt: -1 })
-      .limit(5)
-      .project({
-        email: 1,
-        createdAt: 1,
-      })
-      .toArray()
-
-    // Convert MongoDB ObjectId → string
-    const serialize = (docs: any[]) =>
-      docs.map((doc) => ({
-        ...doc,
-        _id: doc._id?.toString(),
-      }))
+    const [posts, contacts, newsletter, products, recentContacts, recentPosts] =
+      await Promise.all([
+        supabase.from("posts").select("id", { count: "exact" }),
+        supabase.from("contacts").select("id", { count: "exact" }),
+        supabase.from("newsletter").select("id", { count: "exact" }),
+        supabase.from("products").select("id", { count: "exact" }),
+        supabase.from("contacts").select("*").order("created_at", { ascending: false }).limit(5),
+        supabase.from("posts").select("*").order("created_at", { ascending: false }).limit(5),
+      ])
 
     return NextResponse.json({
-      totalPosts: 0, // If posts are in Sanity
-      totalContacts,
-      totalSubscribers,
-      totalProducts,
-      recentContacts: serialize(recentContacts),
-      recentSubscribers: serialize(recentSubscribers),
-      recentPosts: [],
+      totalPosts:       posts.count       ?? 0,
+      totalContacts:    contacts.count    ?? 0,
+      totalSubscribers: newsletter.count  ?? 0,
+      totalProducts:    products.count    ?? 0,
+      recentContacts:   recentContacts.data ?? [],
+      recentPosts:      recentPosts.data    ?? [],
     })
-
   } catch (error) {
-    console.error("MongoDB stats error:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch stats from database" },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 })
   }
 }

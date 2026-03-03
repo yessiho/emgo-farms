@@ -9,12 +9,11 @@
   },
   "dependencies": {
     "@portabletext/react": "^6.0.2",
+    "@supabase/supabase-js": "^2.98.0",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.3.1",
     "framer-motion": "^12.34.2",
     "lucide-react": "^0.574.0",
-    "mongodb": "^6.21.0",
-    "mongoose": "^8.23.0",
     "next": "16.1.6",
     "next-auth": "^4.24.13",
     "nodemailer": "^7.0.13",
