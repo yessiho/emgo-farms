@@ -9,7 +9,7 @@ import {
   LayoutDashboard, FileText, Users, Mail, Package, Settings,
   TrendingUp, Leaf, RefreshCw, LogOut, Bell, Search,
   ChevronRight, ArrowUpRight, MessageSquare, Eye, Plus,
-  BarChart3, Shield,
+  BarChart3, Shield, Briefcase, Image as ImageIcon,
 } from "lucide-react"
 
 interface Stats {
@@ -22,9 +22,11 @@ const NAV = [
   { label: "Dashboard",   icon: LayoutDashboard, href: "/admin/dashboard", active: true },
   { label: "Blog Posts",  icon: FileText,        href: "/admin/posts"                   },
   { label: "Contacts",    icon: Mail,            href: "/admin/contacts"                },
-  { label: "Subscribers", icon: Users,           href: "/admin/dashboard"               },
+  { label: "Subscribers", icon: Users, href: "/admin/subscribers"                       },
   { label: "Products",    icon: Package,         href: "/admin/products"                },
-  { label: "Settings",    icon: Settings,        href: "/admin/dashboard"               },
+  { label: "Services",    icon: Briefcase,       href: "/admin/services"                },
+  { label: "Gallery",     icon: ImageIcon,       href: "/admin/gallery"                 },
+  { label: "Settings",    icon: Settings,        href: "/admin/settings"                },
 ]
 
 const STAT_CARDS = [

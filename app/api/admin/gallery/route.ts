@@ -1,4 +1,4 @@
-// app/api/admin/products/route.ts
+// app/api/admin/gallery/route.ts
 import { NextResponse } from "next/server"
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -10,30 +10,16 @@ const DB_HEADERS = {
   "Authorization": `Bearer ${SERVICE_KEY}`,
 }
 
-// GET — list all products
-export async function GET() {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&order=created_at.desc`, {
-      headers: DB_HEADERS,
-    })
-    const text = await res.text()
-    if (!res.ok) return NextResponse.json({ error: text }, { status: res.status })
-    return NextResponse.json(JSON.parse(text))
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
-  }
-}
-
-// POST — create product OR upload image (multipart)
+// POST — upload file to storage AND save record to gallery table
 export async function POST(req: Request) {
   const contentType = req.headers.get("content-type") ?? ""
 
-  // ── IMAGE UPLOAD ──────────────────────────────────────────
+  // ── FILE UPLOAD ONLY (no DB save — called from handleUpload step 1) ──
   if (contentType.includes("multipart/form-data")) {
     try {
       const formData = await req.formData()
       const file     = formData.get("file") as File
-      const folder   = (formData.get("folder") as string) || "products"
+      const folder   = (formData.get("folder") as string) || "gallery/images"
 
       if (!file) return NextResponse.json({ error: "No file provided" }, { status: 400 })
 
@@ -67,24 +53,21 @@ export async function POST(req: Request) {
     }
   }
 
-  // ── CREATE PRODUCT ────────────────────────────────────────
+  // ── SAVE GALLERY RECORD TO DB ─────────────────────────────
   try {
     const body = await req.json()
-    const { name, category, price, unit, description, status, in_stock, image_url } = body
-    if (!name?.trim()) return NextResponse.json({ error: "Name is required" }, { status: 400 })
+    const { image_url, caption, category, media_type } = body
 
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/products`, {
+    if (!image_url) return NextResponse.json({ error: "image_url is required" }, { status: 400 })
+
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gallery`, {
       method:  "POST",
       headers: { ...DB_HEADERS, "Prefer": "return=representation" },
       body: JSON.stringify({
-        name:        name.trim(),
-        category:    category    ?? "Other",
-        price:       parseFloat(price) || 0,
-        unit:        unit        ?? "per unit",
-        description: description ?? "",
-        status:      status      ?? "active",
-        in_stock:    in_stock    ?? true,
-        image_url:   image_url   ?? "",
+        image_url,
+        caption:    caption    ?? "",
+        category:   category   ?? "General",
+        media_type: media_type ?? "image",
       }),
     })
     const text = await res.text()

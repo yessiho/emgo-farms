@@ -1,18 +1,45 @@
 // app/api/contact/route.ts
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SERVICE_KEY  = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
 export async function POST(req: Request) {
-  const body = await req.json()
-  const { name, email, phone, service, message } = body
-  if (!name || !email || !message)
-    return NextResponse.json({ error: "Name, email and message are required" }, { status: 400 })
-  const { error } = await supabase.from("contacts").insert({ name, email, phone, service, message, read: false })
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ success: true })
+  try {
+    const { name, email, phone, service, message } = await req.json()
+
+    if (!name?.trim() || !email?.trim() || !message?.trim())
+      return NextResponse.json({ error: "Name, email and message are required" }, { status: 400 })
+
+    // Use native fetch directly to Supabase REST API
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/contacts`, {
+      method: "POST",
+      headers: {
+        "Content-Type":  "application/json",
+        "apikey":        SERVICE_KEY,
+        "Authorization": `Bearer ${SERVICE_KEY}`,
+        "Prefer":        "return=representation",
+      },
+      body: JSON.stringify({
+        name:    name.trim(),
+        email:   email.trim(),
+        phone:   phone   || "",
+        service: service || "",
+        message: message.trim(),
+        read:    false,
+      }),
+    })
+
+    const text = await res.text()
+    console.log("[contact POST] status:", res.status, "body:", text)
+
+    if (!res.ok) {
+      return NextResponse.json({ error: text }, { status: res.status })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (err: any) {
+    console.error("[contact POST] error:", err.message)
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
 }

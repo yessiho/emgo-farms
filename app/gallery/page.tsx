@@ -3,27 +3,18 @@
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Lightbox from "yet-another-react-lightbox"
+import Video from "yet-another-react-lightbox/plugins/video"
 import "yet-another-react-lightbox/styles.css"
 
-const galleryImages = [
-  { src: "/image/oil-palm9.jpg",          alt: "Oil Palm Plantation - Nsit Atai" },
-  { src: "/image/gallery2.jpg",              alt: "High-Yield Oil Palm Trees" },
-  { src: "/image/gallery3.jpg",              alt: "Fresh Fruit Bunch Harvesting" },
-  { src: "/image/galler1.jpeg",              alt: "Palm Oil Processing Unit" },
-  { src: "/image/gallery5.jpg",              alt: "Palm Kernel Oil Refining Process" },
-  { src: "/image/gallery6.jpg",         alt: "Premium Oil Palm Fruits" },
-  { src: "/image/gallery7.jpg",          alt: "Integrated Farm Landscape" },
-  { src: "/image/galler2.jpeg",alt: "Refined Palm Oil Packaging" },
-]
-
+// ── Static nursery images ─────────────────────────────────────
 const nurseryImages = [
-  { src: "/image/oil-palm6.webp", alt: "Oil Palm Seedlings — Early Stage Germination" },
-  { src: "/image/seedbed.jpg", alt: "Pre-Nursery Polybag Seedling Beds" },
-  { src: "/image/plant.jpg", alt: "Main Nursery Oil Palm Transplants" },
-  { src: "/image/oil-palm.webp", alt: "Irrigation System in Nursery" },
-  { src: "/image/oil-palm1.webp", alt: "Healthy Seedling Quality Check" },
+  { src: "/image/oil-palm6.webp",  alt: "Oil Palm Seedlings — Early Stage Germination" },
+  { src: "/image/seedbed.jpg",     alt: "Pre-Nursery Polybag Seedling Beds" },
+  { src: "/image/plant.jpg",       alt: "Main Nursery Oil Palm Transplants" },
+  { src: "/image/oil-palm.webp",   alt: "Irrigation System in Nursery" },
+  { src: "/image/oil-palm1.webp",  alt: "Healthy Seedling Quality Check" },
   { src: "/image/oil-palm11.avif", alt: "Cassava Stem Nursery Preparation" },
 ]
 
@@ -48,6 +39,26 @@ const nurserySteps = [
   { step: "05", label: "Field Transplant", desc: "Seedlings planted into prepared plantation rows", icon: "🌴" },
 ]
 
+// ── Fallback if DB is empty ───────────────────────────────────
+const fallbackImages = [
+  { src: "/image/oil-palm9.jpg",  alt: "Oil Palm Plantation - Nsit Atai",  category: "Farm",       media_type: "image" },
+  { src: "/image/gallery2.jpg",   alt: "High-Yield Oil Palm Trees",         category: "Farm",       media_type: "image" },
+  { src: "/image/gallery3.jpg",   alt: "Fresh Fruit Bunch Harvesting",      category: "Farm",       media_type: "image" },
+  { src: "/image/galler1.jpeg",   alt: "Palm Oil Processing Unit",          category: "Production", media_type: "image" },
+  { src: "/image/gallery5.jpg",   alt: "Palm Kernel Oil Refining Process",  category: "Production", media_type: "image" },
+  { src: "/image/gallery6.jpg",   alt: "Premium Oil Palm Fruits",           category: "Farm",       media_type: "image" },
+  { src: "/image/gallery7.jpg",   alt: "Integrated Farm Landscape",         category: "Farm",       media_type: "image" },
+  { src: "/image/galler2.jpeg",   alt: "Refined Palm Oil Packaging",        category: "Production", media_type: "image" },
+]
+
+interface GalleryItem {
+  id?:        string
+  src:        string
+  alt:        string
+  category:   string
+  media_type: string
+}
+
 const ExpandIcon = () => (
   <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -55,13 +66,113 @@ const ExpandIcon = () => (
   </svg>
 )
 
-export default function GalleryPage() {
-  const [open, setOpen] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [lightboxImages, setLightboxImages] = useState(galleryImages)
+// ── Video card with hover-to-play ─────────────────────────────
+function VideoCard({ item, onClick }: { item: GalleryItem; onClick: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [playing, setPlaying] = useState(false)
 
-  const openGallery = (images: typeof galleryImages, idx: number) => {
-    setLightboxImages(images)
+  return (
+    <div
+      className="relative cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg group"
+      onClick={onClick}
+      onMouseEnter={() => { setPlaying(true); videoRef.current?.play() }}
+      onMouseLeave={() => {
+        setPlaying(false)
+        if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = 0 }
+      }}
+    >
+      <video ref={videoRef} src={item.src} muted playsInline loop
+        className="object-cover w-full h-32 sm:h-52 lg:h-60 transition-transform duration-500 group-hover:scale-105 group-hover:brightness-75" />
+
+      {/* Play button shown when not hovering */}
+      <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${playing ? "opacity-0" : "opacity-100"}`}>
+        <div className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center">
+          <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+        </div>
+      </div>
+
+      {/* Hover caption */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2.5 sm:p-4 pointer-events-none">
+        <p className="text-white text-xs sm:text-sm font-medium leading-snug">{item.alt}</p>
+      </div>
+
+      {/* Video badge */}
+      <span className="absolute top-2 left-2 bg-purple-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 pointer-events-none">
+        <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+        Video
+      </span>
+
+      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-white/20 backdrop-blur-sm rounded-full p-1.5 sm:p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+        <ExpandIcon />
+      </div>
+    </div>
+  )
+}
+
+export default function GalleryPage() {
+  const [open,           setOpen]          = useState(false)
+  const [currentIndex,   setCurrentIndex]  = useState(0)
+  const [lightboxSlides, setLightboxSlides] = useState<any[]>([])
+  const [galleryItems,   setGalleryItems]  = useState<GalleryItem[]>([])
+  const [loading,        setLoading]       = useState(true)
+  const [activeFilter,   setActiveFilter]  = useState("All")
+  const [mediaFilter,    setMediaFilter]   = useState("All")
+
+  useEffect(() => { fetchGallery() }, [])
+
+  const fetchGallery = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/gallery?select=*&order=created_at.desc`,
+        {
+          headers: {
+            "apikey":        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
+          }
+        }
+      )
+      const data = await res.json()
+
+      if (Array.isArray(data) && data.length > 0) {
+        setGalleryItems(data.map((row: any) => ({
+          id:         row.id,
+          src:        row.image_url,
+          alt:        row.caption    || "EMGO Farms Gallery",
+          category:   row.category   || "General",
+          media_type: row.media_type || "image",
+        })))
+      } else {
+        setGalleryItems(fallbackImages)
+      }
+    } catch {
+      setGalleryItems(fallbackImages)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const allCategories = ["All", ...Array.from(new Set(galleryItems.map(g => g.category)))]
+
+  const filteredItems = galleryItems
+    .filter(g => activeFilter === "All" || g.category === activeFilter)
+    .filter(g => mediaFilter === "All"
+      || (mediaFilter === "Videos" ? g.media_type === "video" : g.media_type !== "video"))
+
+  const imageCount = galleryItems.filter(g => g.media_type !== "video").length
+  const videoCount = galleryItems.filter(g => g.media_type === "video").length
+
+  const openLightbox = (items: GalleryItem[], idx: number) => {
+    setLightboxSlides(items.map(item =>
+      item.media_type === "video"
+        ? { type: "video" as const, sources: [{ src: item.src, type: "video/mp4" }], alt: item.alt }
+        : { src: item.src, alt: item.alt }
+    ))
+    setCurrentIndex(idx)
+    setOpen(true)
+  }
+
+  const openNurseryLightbox = (idx: number) => {
+    setLightboxSlides(nurseryImages.map(img => ({ src: img.src, alt: img.alt })))
     setCurrentIndex(idx)
     setOpen(true)
   }
@@ -69,97 +180,54 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen bg-white text-gray-800 font-sans">
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
+      {/* HERO */}
       <section className="relative h-[60vh] sm:h-[65vh] lg:h-[70vh] bg-[url('/image/product1.jpg')] bg-cover bg-center flex items-center justify-center">
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative text-center px-5 sm:px-8 max-w-4xl mx-auto">
-          <motion.span
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="inline-block bg-orange-500/80 backdrop-blur-sm text-white text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4 sm:mb-5"
-          >
+          <motion.span initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
+            className="inline-block bg-orange-500/80 backdrop-blur-sm text-white text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4 sm:mb-5">
             Gallery & Nursery
           </motion.span>
-
-          <motion.h1
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, delay: 0.1 }}
-            className="text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6"
-          >
+          <motion.h1 initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 1, delay: 0.1 }}
+            className="text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6">
             Rooted in Purpose. <br className="hidden sm:block" />
             <span className="text-orange-400">Growing with Vision.</span>
           </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="text-gray-200 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed"
-          >
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.5 }}
+            className="text-gray-200 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed">
             A visual journey through EMGO Farms' integrated agro-industrial operations —
             from cultivation to refining excellence.
           </motion.p>
         </div>
       </section>
 
-
-      {/* ── COMPANY OVERVIEW ──────────────────────────────────── */}
+      {/* COMPANY OVERVIEW */}
       <section className="py-14 sm:py-16 lg:py-20 bg-green-50">
         <div className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="mb-6 sm:mb-8"
-          >
-            <span className="inline-block bg-green-100 text-green-800 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4">
-              Our Ecosystem
-            </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800">
-              Our Integrated Agricultural Ecosystem
-            </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-6 sm:mb-8">
+            <span className="inline-block bg-green-100 text-green-800 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4">Our Ecosystem</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800">Our Integrated Agricultural Ecosystem</h2>
           </motion.div>
-
           <div className="space-y-4 sm:space-y-5 text-left sm:text-center">
             {[
               "EMGO Farms and Integrated Services Limited operates from the fertile soils of Nsit Atai, Akwa Ibom State, Nigeria — building a scalable, technology-driven, and sustainability-focused agro-industrial enterprise.",
               "Our long-term objective includes cultivating over 50,000 high-yield oil palm trees, establishing a modern palm oil and palm kernel oil refining plant, and developing a fully integrated value chain.",
               "Beyond oil palm, our diversified ecosystem includes cassava cultivation for starch production, ginger and other cash crops, and sustainable animal husbandry — ensuring circular agriculture and long-term value creation.",
             ].map((text, i) => (
-              <motion.p
-                key={i}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.12 }}
-                className="text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed"
-              >
-                {text}
-              </motion.p>
+              <motion.p key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: i * 0.12 }}
+                className="text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed">{text}</motion.p>
             ))}
           </div>
         </div>
       </section>
 
-
-      {/* ── VALUE HIGHLIGHTS ──────────────────────────────────── */}
+      {/* VALUE HIGHLIGHTS */}
       <section className="py-10 sm:py-14 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-          {/* Row on mobile (icon + text inline), column-card on sm+ */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 lg:gap-10">
             {valueHighlights.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.13 }}
-                className="flex sm:flex-col items-start sm:items-center gap-4 sm:gap-0 p-5 sm:p-8 bg-green-50 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 sm:text-center"
-              >
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: i * 0.13 }}
+                className="flex sm:flex-col items-start sm:items-center gap-4 sm:gap-0 p-5 sm:p-8 bg-green-50 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 sm:text-center">
                 <div className="text-3xl sm:text-4xl sm:mb-4 flex-shrink-0">{item.icon}</div>
                 <div>
                   <h3 className="text-base sm:text-xl font-semibold text-green-800 mb-1 sm:mb-3">{item.title}</h3>
@@ -171,187 +239,170 @@ export default function GalleryPage() {
         </div>
       </section>
 
-
-      {/* ── MAIN GALLERY GRID ─────────────────────────────────── */}
+      {/* MAIN GALLERY — live from DB */}
       <section className="py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-7 sm:mb-10 lg:mb-12"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            className="text-center mb-7 sm:mb-10">
             <span className="inline-block bg-orange-100 text-orange-700 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-3">
-              Photo Gallery
+              Photo & Video Gallery
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800">Farm Operations</h2>
-          </motion.div>
-
-          {/* 2-col mobile → 3-col md → 4-col lg */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
-            {galleryImages.map((img, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.06 }}
-                className="relative cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg group"
-                onClick={() => openGallery(galleryImages, idx)}
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  width={500}
-                  height={500}
-                  className="object-cover w-full h-32 sm:h-52 lg:h-60 transition-transform duration-500 group-hover:scale-110 group-hover:brightness-75"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2.5 sm:p-4">
-                  <p className="text-white text-xs sm:text-sm font-medium leading-snug">{img.alt}</p>
-                </div>
-                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-white/20 backdrop-blur-sm rounded-full p-1.5 sm:p-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <ExpandIcon />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
-      {/* ── FARM NURSERY ──────────────────────────────────────── */}
-      <section className="py-14 sm:py-20 lg:py-28 bg-green-50">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-
-          {/* Header */}
-          <motion.div
-            initial={{ y: 40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-10 sm:mb-14 lg:mb-20"
-          >
-            <span className="inline-block bg-green-100 text-green-700 text-xs sm:text-sm font-semibold tracking-widest uppercase px-4 sm:px-5 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6">
-              Where It All Begins
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-800 mb-4 sm:mb-6">
-              Farm Nursery
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed">
-              Every great plantation begins in the nursery. At EMGO Farms, we maintain
-              a carefully managed nursery system using certified high-yield oil palm and cassava
-              varieties — giving every seedling the best possible start before transplanting to the field.
+            <p className="text-gray-400 text-sm mt-2">
+              {imageCount} {imageCount === 1 ? "photo" : "photos"} · {videoCount} {videoCount === 1 ? "video" : "videos"}
             </p>
           </motion.div>
 
-          {/* Stats — 2-col mobile, 4-col md+ */}
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-10 sm:mb-14 lg:mb-20"
-          >
+          {/* Filters */}
+          {!loading && (
+            <div className="flex flex-wrap gap-2 mb-8 justify-center">
+              {["All", "Images", "Videos"].map(type => (
+                <button key={type} onClick={() => setMediaFilter(type)}
+                  className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition border ${
+                    mediaFilter === type
+                      ? type === "Videos" ? "bg-purple-600 text-white border-purple-600"
+                        : "bg-green-800 text-white border-green-800"
+                      : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                  }`}>
+                  {type === "Videos" ? "🎬 " : type === "Images" ? "🖼 " : ""}
+                  {type}
+                </button>
+              ))}
+
+              {allCategories.length > 2 && (
+                <>
+                  <span className="text-gray-300 self-center text-lg">|</span>
+                  {allCategories.map(cat => (
+                    <button key={cat} onClick={() => setActiveFilter(cat)}
+                      className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-semibold transition border ${
+                        activeFilter === cat
+                          ? "bg-orange-500 text-white border-orange-500"
+                          : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
+                      }`}>
+                      {cat}
+                    </button>
+                  ))}
+                </>
+              )}
+            </div>
+          )}
+
+          {loading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
+              {[1,2,3,4,5,6,7,8].map(i => (
+                <div key={i} className="bg-gray-100 rounded-2xl h-32 sm:h-52 animate-pulse" />
+              ))}
+            </div>
+          ) : filteredItems.length === 0 ? (
+            <div className="py-16 text-center text-gray-400">
+              <p className="text-sm">No media found for this filter.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
+              {filteredItems.map((item, idx) => (
+                <motion.div key={item.id ?? idx}
+                  initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }} transition={{ duration: 0.5, delay: (idx % 8) * 0.06 }}>
+
+                  {item.media_type === "video" ? (
+                    <VideoCard item={item} onClick={() => openLightbox(filteredItems, idx)} />
+                  ) : (
+                    <div className="relative cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg group"
+                      onClick={() => openLightbox(filteredItems, idx)}>
+                      <img src={item.src} alt={item.alt}
+                        onError={e => { (e.target as HTMLImageElement).src = "/image/oil-palm9.jpg" }}
+                        className="object-cover w-full h-32 sm:h-52 lg:h-60 transition-transform duration-500 group-hover:scale-110 group-hover:brightness-75" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2.5 sm:p-4">
+                        <p className="text-white text-xs sm:text-sm font-medium leading-snug">{item.alt}</p>
+                      </div>
+                      {item.category && item.category !== "General" && (
+                        <span className="absolute top-2 left-2 bg-green-800/80 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                          {item.category}
+                        </span>
+                      )}
+                      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-white/20 backdrop-blur-sm rounded-full p-1.5 sm:p-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <ExpandIcon />
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* FARM NURSERY */}
+      <section className="py-14 sm:py-20 lg:py-28 bg-green-50">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+          <motion.div initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            className="text-center mb-10 sm:mb-14 lg:mb-20">
+            <span className="inline-block bg-green-100 text-green-700 text-xs sm:text-sm font-semibold tracking-widest uppercase px-4 sm:px-5 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6">Where It All Begins</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-green-800 mb-4 sm:mb-6">Farm Nursery</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base lg:text-lg leading-relaxed">
+              Every great plantation begins in the nursery. At EMGO Farms, we maintain a carefully managed nursery system
+              using certified high-yield oil palm and cassava varieties — giving every seedling the best possible start.
+            </p>
+          </motion.div>
+
+          <motion.div initial={{ y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-10 sm:mb-14 lg:mb-20">
             {nurseryStat.map((stat, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl p-5 sm:p-7 lg:p-8 text-center shadow-md border border-green-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-              >
+              <div key={idx} className="bg-white rounded-2xl p-5 sm:p-7 lg:p-8 text-center shadow-md border border-green-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800 mb-1 sm:mb-2">{stat.value}</p>
                 <p className="text-gray-500 text-xs sm:text-sm leading-snug">{stat.label}</p>
               </div>
             ))}
           </motion.div>
 
-          {/* Two-Stage — 1-col mobile, 2-col md+ */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 lg:gap-10 mb-10 sm:mb-14 lg:mb-20">
-
-            <motion.div
-              initial={{ x: -40, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-green-100 hover:shadow-2xl transition-all duration-300"
-            >
+            <motion.div initial={{ x: -40, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+              className="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-green-100 hover:shadow-2xl transition-all duration-300">
               <div className="text-4xl sm:text-5xl mb-4 sm:mb-5">🌱</div>
               <h3 className="text-xl sm:text-2xl font-bold text-green-800 mb-3 sm:mb-4">Stage 1 — Pre-Nursery</h3>
               <div className="w-10 h-1 bg-green-400 rounded-full mb-4 sm:mb-5" />
               <p className="text-gray-600 leading-relaxed mb-4 text-sm sm:text-base">
-                Germinated seeds are placed in small polybags under shade structures for{" "}
-                <strong className="text-green-800">3 months</strong>. Careful watering schedules and pest monitoring ensure healthy root development.
+                Germinated seeds are placed in small polybags under shade structures for <strong className="text-green-800">3 months</strong>.
+                Careful watering schedules and pest monitoring ensure healthy root development.
               </p>
               <ul className="space-y-2 text-gray-600 text-xs sm:text-sm">
-                {["Certified NIFOR-sourced seed varieties", "Shaded polybag germination beds", "Daily irrigation & nutrient monitoring", "Disease and pest screening"].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-green-600 font-bold mt-0.5 flex-shrink-0">✔</span>{item}
-                  </li>
+                {["Certified NIFOR-sourced seed varieties","Shaded polybag germination beds","Daily irrigation & nutrient monitoring","Disease and pest screening"].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2"><span className="text-green-600 font-bold mt-0.5 flex-shrink-0">✔</span>{item}</li>
                 ))}
               </ul>
             </motion.div>
-
-            <motion.div
-              initial={{ x: 40, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="bg-green-800 text-white rounded-3xl p-6 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300"
-            >
+            <motion.div initial={{ x: 40, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+              className="bg-green-800 text-white rounded-3xl p-6 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300">
               <div className="text-4xl sm:text-5xl mb-4 sm:mb-5">🌿</div>
               <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Stage 2 — Main Nursery</h3>
               <div className="w-10 h-1 bg-green-400 rounded-full mb-4 sm:mb-5" />
               <p className="text-green-100 leading-relaxed mb-4 text-sm sm:text-base">
-                Pre-nursery seedlings are transferred to larger polybags and grown for a further{" "}
-                <strong className="text-white">6 months</strong> under open sunlight, with controlled fertilisation and structured weeding.
+                Pre-nursery seedlings transferred to larger polybags and grown for a further <strong className="text-white">6 months</strong> under
+                open sunlight, with controlled fertilisation and structured weeding.
               </p>
               <ul className="space-y-2 text-green-200 text-xs sm:text-sm">
-                {["Larger polybag transplants with rich soil mix", "Open-field sun acclimatisation", "Fertiliser application schedule", "Selection of only vigorous, uniform seedlings"].map((item, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="text-green-400 font-bold mt-0.5 flex-shrink-0">✔</span>{item}
-                  </li>
+                {["Larger polybag transplants with rich soil mix","Open-field sun acclimatisation","Fertiliser application schedule","Selection of only vigorous, uniform seedlings"].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2"><span className="text-green-400 font-bold mt-0.5 flex-shrink-0">✔</span>{item}</li>
                 ))}
               </ul>
             </motion.div>
-
           </div>
 
           {/* Nursery Gallery */}
-          <motion.div
-            initial={{ y: 40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="mb-10 sm:mb-14 lg:mb-16"
-          >
+          <motion.div initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="mb-10 sm:mb-14 lg:mb-16">
             <div className="text-center mb-5 sm:mb-8 lg:mb-10">
-              <h3 className="text-xl sm:text-2xl font-bold text-green-800 mb-1 sm:mb-2">Nursery Gallery</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-green-800">Nursery Gallery</h3>
             </div>
-
-            {/* 2-col mobile, 3-col md+ */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-5">
               {nurseryImages.map((img, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.08 }}
+                <motion.div key={idx} initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: idx * 0.08 }}
                   className="relative cursor-pointer overflow-hidden rounded-xl sm:rounded-2xl shadow-md group"
-                  onClick={() => openGallery(nurseryImages, idx)}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    width={600}
-                    height={400}
-                    className="object-cover w-full h-32 sm:h-52 lg:h-60 transition-transform duration-500 group-hover:scale-110 group-hover:brightness-75"
-                  />
+                  onClick={() => openNurseryLightbox(idx)}>
+                  <Image src={img.src} alt={img.alt} width={600} height={400}
+                    className="object-cover w-full h-32 sm:h-52 lg:h-60 transition-transform duration-500 group-hover:scale-110 group-hover:brightness-75" />
                   <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2.5 sm:p-5">
-                    <div>
-                      <span className="text-xs font-semibold text-green-300 uppercase tracking-widest block mb-0.5 sm:mb-1 hidden sm:block">Farm Nursery</span>
-                      <p className="text-white text-xs sm:text-sm font-medium leading-snug">{img.alt}</p>
-                    </div>
+                    <p className="text-white text-xs sm:text-sm font-medium leading-snug">{img.alt}</p>
                   </div>
                   <div className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-white/20 backdrop-blur-sm rounded-full p-1.5 sm:p-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <ExpandIcon />
@@ -361,29 +412,18 @@ export default function GalleryPage() {
             </div>
           </motion.div>
 
-          {/* Seedling Journey — vertical stepper mobile, horizontal row md+ */}
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="bg-white rounded-3xl border border-green-100 shadow-lg px-5 sm:px-8 lg:px-10 py-7 sm:py-10"
-          >
+          {/* Seedling Journey */}
+          <motion.div initial={{ y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+            className="bg-white rounded-3xl border border-green-100 shadow-lg px-5 sm:px-8 lg:px-10 py-7 sm:py-10">
             <h4 className="text-center text-xs sm:text-sm lg:text-base font-bold text-green-800 mb-7 sm:mb-10 tracking-wide uppercase">
               Seedling Journey — From Seed to Field
             </h4>
-
-            {/* Mobile vertical stepper */}
             <div className="flex flex-col gap-0 md:hidden">
               {nurserySteps.map((item, idx, arr) => (
                 <div key={idx} className="flex items-start gap-4">
                   <div className="flex flex-col items-center flex-shrink-0">
-                    <div className="w-11 h-11 bg-green-50 border-2 border-green-200 rounded-full flex items-center justify-center text-xl shadow-sm">
-                      {item.icon}
-                    </div>
-                    {idx < arr.length - 1 && (
-                      <div className="w-0.5 h-8 bg-green-200 my-1" />
-                    )}
+                    <div className="w-11 h-11 bg-green-50 border-2 border-green-200 rounded-full flex items-center justify-center text-xl shadow-sm">{item.icon}</div>
+                    {idx < arr.length - 1 && <div className="w-0.5 h-8 bg-green-200 my-1" />}
                   </div>
                   <div className="pb-6">
                     <span className="text-xs font-bold text-green-600 tracking-widest uppercase block">Step {item.step}</span>
@@ -393,95 +433,60 @@ export default function GalleryPage() {
                 </div>
               ))}
             </div>
-
-            {/* Desktop horizontal row */}
             <div className="hidden md:flex items-start justify-between gap-3">
               {nurserySteps.map((item, idx, arr) => (
                 <div key={idx} className="flex items-start gap-3 flex-1">
                   <div className="flex flex-col items-center text-center flex-1">
-                    <div className="w-14 h-14 bg-green-50 border-2 border-green-200 rounded-full flex items-center justify-center text-2xl mb-3 shadow-sm">
-                      {item.icon}
-                    </div>
+                    <div className="w-14 h-14 bg-green-50 border-2 border-green-200 rounded-full flex items-center justify-center text-2xl mb-3 shadow-sm">{item.icon}</div>
                     <span className="text-xs font-bold text-green-600 tracking-widest uppercase mb-1">Step {item.step}</span>
                     <p className="text-sm font-bold text-green-800 mb-1">{item.label}</p>
                     <p className="text-xs text-gray-400 leading-snug">{item.desc}</p>
                   </div>
-                  {idx < arr.length - 1 && (
-                    <div className="text-green-300 text-xl flex-shrink-0 pt-4">→</div>
-                  )}
+                  {idx < arr.length - 1 && <div className="text-green-300 text-xl flex-shrink-0 pt-4">→</div>}
                 </div>
               ))}
             </div>
           </motion.div>
-
         </div>
       </section>
 
-
-      {/* LIGHTBOX */}
+      {/* LIGHTBOX — images + videos */}
       <Lightbox
         open={open}
         index={currentIndex}
         close={() => setOpen(false)}
-        slides={lightboxImages.map((img) => ({ src: img.src, alt: img.alt }))}
+        slides={lightboxSlides}
+        plugins={[Video]}
       />
 
-
-      {/* ── ESG SECTION ───────────────────────────────────────── */}
+      {/* ESG */}
       <section className="py-14 sm:py-16 lg:py-20 bg-green-800 text-white">
         <div className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="inline-block bg-white/10 border border-white/20 text-green-200 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4 sm:mb-5">
-              Our Commitment
-            </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-5">
-              Sustainability in Action
-            </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+            <span className="inline-block bg-white/10 border border-white/20 text-green-200 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4 sm:mb-5">Our Commitment</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-5">Sustainability in Action</h2>
             <p className="text-sm sm:text-base lg:text-lg text-gray-200 leading-relaxed">
-              Our Environmental, Social, and Governance (ESG) framework ensures that
-              every stage of our operations protects ecosystems, empowers communities,
-              and upholds ethical governance standards — reinforcing our commitment to
-              long-term agricultural transformation in Nigeria and West Africa.
+              Our Environmental, Social, and Governance (ESG) framework ensures that every stage of our operations
+              protects ecosystems, empowers communities, and upholds ethical governance standards.
             </p>
           </motion.div>
         </div>
       </section>
 
-
-      {/* ── CTA SECTION ───────────────────────────────────────── */}
+      {/* CTA */}
       <section className="py-14 sm:py-16 lg:py-20 bg-white">
         <div className="max-w-3xl mx-auto px-5 sm:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800 mb-3 sm:mb-4">
-              Partner With EMGO Farms
-            </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-800 mb-3 sm:mb-4">Partner With EMGO Farms</h2>
             <p className="text-gray-600 text-sm sm:text-base max-w-xl mx-auto mb-7 sm:mb-8 leading-relaxed">
               Whether you are an investor, distributor, institutional buyer, or strategic partner —
               we welcome collaborations that align with sustainable growth and premium agro-industrial excellence.
             </p>
-
-            {/* Stacked on mobile, inline on sm+ */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/contact"
-                className="w-full sm:w-auto inline-block px-8 sm:px-10 py-3.5 sm:py-4 bg-orange-500 text-white rounded-full font-semibold text-sm sm:text-base hover:bg-orange-600 transition-all duration-200 shadow-lg hover:scale-[1.03] active:scale-95"
-              >
+              <Link href="/contact" className="w-full sm:w-auto inline-block px-8 sm:px-10 py-3.5 sm:py-4 bg-orange-500 text-white rounded-full font-semibold text-sm sm:text-base hover:bg-orange-600 transition-all duration-200 shadow-lg hover:scale-[1.03] active:scale-95">
                 Contact Us →
               </Link>
-              <Link
-                href="/about"
-                className="w-full sm:w-auto inline-block px-8 sm:px-10 py-3.5 sm:py-4 border-2 border-green-800 text-green-800 rounded-full font-semibold text-sm sm:text-base hover:bg-green-800 hover:text-white transition-all duration-200"
-              >
+              <Link href="/about" className="w-full sm:w-auto inline-block px-8 sm:px-10 py-3.5 sm:py-4 border-2 border-green-800 text-green-800 rounded-full font-semibold text-sm sm:text-base hover:bg-green-800 hover:text-white transition-all duration-200">
                 Learn About Us
               </Link>
             </div>

@@ -10,15 +10,26 @@ import { usePathname } from "next/navigation"
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [visible, setVisible] = useState(true)
+  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
     let lastScroll = 0
+
     const handleScroll = () => {
       const currentScroll = window.scrollY
+
       setVisible(currentScroll < lastScroll || currentScroll < 100)
+
+      if (currentScroll > 50) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+
       lastScroll = currentScroll
     }
+
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -40,22 +51,27 @@ export const Navbar = () => {
           animate={{ y: 0 }}
           exit={{ y: -100 }}
           transition={{ duration: 0.4 }}
-          className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/90 border-b border-white/20 shadow-lg"
+          className={`fixed top-0 w-full z-50 backdrop-blur-xl bg-white/90 border-b border-white/20 shadow-lg transition-all duration-300 ${
+            scrolled ? "py-1" : "py-2 sm:py-3"
+          }`}
         >
-          <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-5 sm:px-8 lg:px-10 py-4 sm:py-5">
+          <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-5 sm:px-8 lg:px-10">
 
             {/* LOGO */}
             <Link href="/" className="flex items-center flex-shrink-0">
               <Image
                 src="/image/logo02.png"
                 alt="Emgo Farms Logo"
-                width={240}          // Increased width
-                height={100}          // Increased height
+                width={240}
+                height={100}
                 priority
-                className="object-contain h-14 sm:h-16 md:h-18 lg:h-20 w-auto drop-shadow-md" // responsive heights
+                className={`object-contain w-auto drop-shadow-md transition-all duration-300 ${
+                  scrolled
+                    ? "h-9 sm:h-10 md:h-12"
+                    : "h-10 sm:h-12 md:h-14 lg:h-16"
+                }`}
               />
             </Link>
-
 
             {/* DESKTOP MENU */}
             <ul className="hidden md:flex space-x-6 lg:space-x-12 font-medium items-center text-[14px] sm:text-[15px] tracking-wide">
@@ -71,6 +87,7 @@ export const Navbar = () => {
                   >
                     {link.name}
                   </Link>
+
                   <span
                     className={`absolute left-0 -bottom-1 h-[2px] bg-orange-500 transition-all duration-300 ${
                       pathname === link.path
@@ -134,7 +151,6 @@ export const Navbar = () => {
               </motion.div>
             )}
           </AnimatePresence>
-
         </motion.nav>
       )}
     </AnimatePresence>
