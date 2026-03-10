@@ -122,15 +122,7 @@ export default function GalleryPage() {
 
   const fetchGallery = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/gallery?select=*&order=created_at.desc`,
-        {
-          headers: {
-            "apikey":        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-          }
-        }
-      )
+      const res = await fetch("/api/gallery")
       const data = await res.json()
 
       if (Array.isArray(data) && data.length > 0) {

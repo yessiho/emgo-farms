@@ -54,7 +54,7 @@ export default function BlogPage() {
   const fetchPosts = async () => {
     try {
       setLoading(true); setError(null)
-      const res  = await fetch("/api/admin/posts")
+      const res  = await fetch("/api/posts")
       const data = await res.json()
       setPosts(Array.isArray(data) ? data.filter((p: Post) => p.status === "published") : [])
     } catch {
@@ -210,19 +210,11 @@ export default function BlogPage() {
                     <div className="relative h-44 sm:h-52 lg:h-56 overflow-hidden bg-gray-100">
                       {post.image_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                     <img
-  src={post.image_url}
-  alt={post.title}
-  onError={(e) => {
-    const t = e.target as HTMLImageElement
-    t.onerror = null
-    t.src = FALLBACK
-  }}
-  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-/>
-                    ) : (
-                      <Image src={FALLBACK} alt={post.title} fill className="object-cover transition-transform duration-500 hover:scale-105" />
-                    )}
+                        <img src={post.image_url} alt={post.title}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                      ) : (
+                        <Image src={FALLBACK} alt={post.title} fill className="object-cover transition-transform duration-500 hover:scale-105" />
+                      )}
                       <span className={`absolute top-3 left-3 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md ${categoryColors[post.category] ?? "bg-green-600"}`}>
                         {post.category}
                       </span>

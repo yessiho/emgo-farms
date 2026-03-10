@@ -42,15 +42,7 @@ export default function ProductsPage() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/products?select=*&status=eq.active&order=created_at.desc`,
-        {
-          headers: {
-            "apikey":        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-          }
-        }
-      )
+      const res = await fetch("/api/products")
       const data = await res.json()
       setProducts(Array.isArray(data) ? data : [])
     } catch (err) {
