@@ -69,7 +69,15 @@ export default function ServicesPage() {
   const [active,   setActive]   = useState<string | null>(null)
 
   useEffect(() => {
-    fetch("/api/services")
+    fetch(
+      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/services?select=*&status=eq.active&order=created_at.asc`,
+      {
+        headers: {
+          "apikey":        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
+        },
+      }
+    )
       .then(r => r.json())
       .then(data => setServices(Array.isArray(data) && data.length > 0 ? data : STATIC_SERVICES))
       .catch(() => setServices(STATIC_SERVICES))
