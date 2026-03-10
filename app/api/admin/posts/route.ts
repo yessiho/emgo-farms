@@ -1,58 +1,59 @@
 // app/api/admin/posts/route.ts
 import { NextResponse } from "next/server"
-import { supabaseAdmin } from "@/lib/supabase"
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SERVICE_KEY  = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+const HEADERS = {
+  "Content-Type":  "application/json",
+  "apikey":        SERVICE_KEY,
+  "Authorization": `Bearer ${SERVICE_KEY}`,
+}
 
 export async function GET() {
-  const { data, error } = await supabaseAdmin
-    .from("posts")
-    .select("*")
-    .order("created_at", { ascending: false })
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json(data)
+  try {
+    const res  = await fetch(
+      `${SUPABASE_URL}/rest/v1/posts?select=*&order=created_at.desc`,
+      { headers: HEADERS, cache: "no-store" }
+    )
+    const text = await res.text()
+    if (!res.ok) return NextResponse.json({ error: text }, { status: res.status })
+    return NextResponse.json(JSON.parse(text))
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
 }
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    console.log("POST /api/admin/posts body:", body)
-
     const { title, category, content, excerpt, status, seo_title, seo_description, image_url } = body
 
-    if (!title || !category)
+    if (!title?.trim() || !category?.trim())
       return NextResponse.json({ error: "Title and category required" }, { status: 400 })
 
-    const slug         = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
-    const autoSeoTitle = seo_title || title
-    const autoSeoDesc  = seo_description || excerpt || content?.slice(0, 160) || ""
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
 
-    const payload = {
-      title,
-      category,
-      content:         content         ?? "",
-      excerpt:         excerpt         ?? "",
-      status:          status          ?? "draft",
-      slug,
-      seo_title:       autoSeoTitle,
-      seo_description: autoSeoDesc,
-      image_url:       image_url       ?? "",
-    }
-
-    console.log("Inserting payload:", payload)
-
-    const { data, error } = await supabaseAdmin
-      .from("posts")
-      .insert(payload)
-      .select()
-      .single()
-
-    if (error) {
-      console.error("Supabase insert error:", error)
-      return NextResponse.json({ error: error.message, details: error }, { status: 500 })
-    }
-
-    return NextResponse.json({ success: true, data })
+    const res  = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {
+      method:  "POST",
+      headers: { ...HEADERS, "Prefer": "return=representation" },
+      body: JSON.stringify({
+        title:           title.trim(),
+        category:        category.trim(),
+        content:         content         ?? "",
+        excerpt:         excerpt         ?? "",
+        status:          status          ?? "draft",
+        slug,
+        seo_title:       seo_title       || title,
+        seo_description: seo_description || excerpt || content?.slice(0, 160) || "",
+        image_url:       image_url       ?? "",
+      }),
+    })
+    const text = await res.text()
+    if (!res.ok) return NextResponse.json({ error: text }, { status: res.status })
+    const data = JSON.parse(text)
+    return NextResponse.json({ success: true, data: Array.isArray(data) ? data[0] : data })
   } catch (err: any) {
-    console.error("POST /api/admin/posts caught error:", err)
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }

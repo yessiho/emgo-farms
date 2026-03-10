@@ -1,33 +1,56 @@
 // app/api/admin/stats/route.ts
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SERVICE_KEY  = process.env.SUPABASE_SERVICE_ROLE_KEY!
+
+const H = {
+  "apikey":        SERVICE_KEY,
+  "Authorization": `Bearer ${SERVICE_KEY}`,
+  "Content-Type":  "application/json",
+}
+
+async function count(table: string): Promise<number> {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/${table}?select=id`,
+    { headers: { ...H, "Prefer": "count=exact" }, cache: "no-store" }
+  )
+  const raw = res.headers.get("content-range") ?? "0/0"
+  return parseInt(raw.split("/")[1] ?? "0", 10)
+}
+
+async function recent(table: string, limit = 5): Promise<any[]> {
+  const res  = await fetch(
+    `${SUPABASE_URL}/rest/v1/${table}?select=*&order=created_at.desc&limit=${limit}`,
+    { headers: H, cache: "no-store" }
+  )
+  const text = await res.text()
+  try { return JSON.parse(text) } catch { return [] }
+}
 
 export async function GET() {
   try {
-    const [posts, contacts, newsletter, products, recentContacts, recentPosts] =
-      await Promise.all([
-        supabase.from("posts").select("id", { count: "exact" }),
-        supabase.from("contacts").select("id", { count: "exact" }),
-        supabase.from("newsletter").select("id", { count: "exact" }),
-        supabase.from("products").select("id", { count: "exact" }),
-        supabase.from("contacts").select("*").order("created_at", { ascending: false }).limit(5),
-        supabase.from("posts").select("*").order("created_at", { ascending: false }).limit(5),
-      ])
+    const [
+      totalPosts, totalContacts, totalSubscribers, totalProducts,
+      recentContacts, recentPosts,
+    ] = await Promise.all([
+      count("posts"),
+      count("contacts"),
+      count("newsletter"),
+      count("products"),
+      recent("contacts"),
+      recent("posts"),
+    ])
 
     return NextResponse.json({
-      totalPosts:       posts.count       ?? 0,
-      totalContacts:    contacts.count    ?? 0,
-      totalSubscribers: newsletter.count  ?? 0,
-      totalProducts:    products.count    ?? 0,
-      recentContacts:   recentContacts.data ?? [],
-      recentPosts:      recentPosts.data    ?? [],
+      totalPosts,
+      totalContacts,
+      totalSubscribers,
+      totalProducts,
+      recentContacts,
+      recentPosts,
     })
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 })
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
