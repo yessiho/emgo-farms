@@ -131,21 +131,50 @@ export default function AdminGalleryPage() {
     setProgress(10)
 
     try {
-      const ext    = file.name.split(".").pop()
-      const folder = mediaType === "video" ? "gallery/videos" : "gallery/images"
-      const path   = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
       let publicUrl = ""
 
-      // Upload via server for both images and videos
-      const form = new FormData()
-      form.append("file",   file)
-      form.append("folder", mediaType === "video" ? "gallery/videos" : "gallery/images")
-      setProgress(30)
-      const uploadRes  = await fetch("/api/admin/gallery", { method: "POST", body: form })
-      const uploadJson = await uploadRes.json()
-      if (!uploadRes.ok) throw new Error(uploadJson.error ?? "Upload failed")
-      setProgress(70)
-      publicUrl = uploadJson.url
+      if (mediaType === "video") {
+        // ── VIDEO: Upload directly to Cloudinary (bypasses Vercel 4.5MB limit) ──
+
+        // Step 1: Get signature from our API
+        const signRes  = await fetch("/api/admin/cloudinary-sign", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ folder: "emgo-farms/gallery" }),
+        })
+        const signJson = await signRes.json()
+        if (!signRes.ok) throw new Error(signJson.error ?? "Failed to get upload signature")
+        setProgress(20)
+
+        // Step 2: Upload directly from browser to Cloudinary
+        const cloudForm = new FormData()
+        cloudForm.append("file",       file)
+        cloudForm.append("api_key",    signJson.apiKey)
+        cloudForm.append("timestamp",  signJson.timestamp)
+        cloudForm.append("signature",  signJson.signature)
+        cloudForm.append("folder",     signJson.folder)
+
+        const cloudRes = await fetch(
+          `https://api.cloudinary.com/v1_1/${signJson.cloudName}/video/upload`,
+          { method: "POST", body: cloudForm }
+        )
+        const cloudJson = await cloudRes.json()
+        if (!cloudRes.ok) throw new Error(cloudJson.error?.message ?? "Cloudinary upload failed")
+        setProgress(70)
+        publicUrl = cloudJson.secure_url
+
+      } else {
+        // ── IMAGE: Upload via server API (images are small, under 4.5MB) ──
+        const form = new FormData()
+        form.append("file",   file)
+        form.append("folder", "gallery/images")
+        setProgress(30)
+        const uploadRes  = await fetch("/api/admin/gallery", { method: "POST", body: form })
+        const uploadJson = await uploadRes.json()
+        if (!uploadRes.ok) throw new Error(uploadJson.error ?? "Upload failed")
+        setProgress(70)
+        publicUrl = uploadJson.url
+      }
 
       // Save record to DB
       const res = await fetch("/api/admin/gallery", {
