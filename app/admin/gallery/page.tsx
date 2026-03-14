@@ -131,28 +131,23 @@ export default function AdminGalleryPage() {
     setProgress(10)
 
     try {
-      const token  = await getToken()
       const ext    = file.name.split(".").pop()
       const folder = mediaType === "video" ? "gallery/videos" : "gallery/images"
       const path   = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      let publicUrl = ""
 
-      // 1. Upload via gallery API route (server-side, uses Service Role key)
-      const uploadForm = new FormData()
-      uploadForm.append("file",   file)
-      uploadForm.append("folder", mediaType === "video" ? "gallery/videos" : "gallery/images")
-
-      const uploadRes = await fetch("/api/admin/gallery", {
-        method: "POST",
-        body:   uploadForm,
-      })
+      // Upload via server for both images and videos
+      const form = new FormData()
+      form.append("file",   file)
+      form.append("folder", mediaType === "video" ? "gallery/videos" : "gallery/images")
+      setProgress(30)
+      const uploadRes  = await fetch("/api/admin/gallery", { method: "POST", body: form })
       const uploadJson = await uploadRes.json()
       if (!uploadRes.ok) throw new Error(uploadJson.error ?? "Upload failed")
-      setProgress(60)
+      setProgress(70)
+      publicUrl = uploadJson.url
 
-      const publicUrl = uploadJson.url
-      setProgress(75)
-
-      // 2. Save to gallery DB table via API route
+      // Save record to DB
       const res = await fetch("/api/admin/gallery", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
@@ -163,7 +158,6 @@ export default function AdminGalleryPage() {
           media_type: mediaType,
         }),
       })
-
       if (!res.ok) throw new Error(await res.text())
 
       setProgress(100)

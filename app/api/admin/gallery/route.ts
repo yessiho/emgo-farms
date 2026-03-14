@@ -1,6 +1,8 @@
 // app/api/admin/gallery/route.ts
 import { NextResponse } from "next/server"
 
+export const maxDuration = 60
+
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const SERVICE_KEY  = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
@@ -8,6 +10,44 @@ const DB_HEADERS = {
   "Content-Type":  "application/json",
   "apikey":        SERVICE_KEY,
   "Authorization": `Bearer ${SERVICE_KEY}`,
+}
+
+// GET — return a signed upload URL for direct browser → Supabase uploads (videos)
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url)
+    const filename    = searchParams.get("filename")
+    const contentType = searchParams.get("contentType") ?? "video/mp4"
+
+    if (!filename) return NextResponse.json({ error: "filename required" }, { status: 400 })
+
+    const res = await fetch(
+      `${SUPABASE_URL}/storage/v1/object/upload/sign/emgo-media/${filename}`,
+      {
+        method: "POST",
+        headers: {
+          "apikey":        SERVICE_KEY,
+          "Authorization": `Bearer ${SERVICE_KEY}`,
+          "Content-Type":  "application/json",
+        },
+        body: JSON.stringify({ expiresIn: 3600 }),
+      }
+    )
+    const text = await res.text()
+    if (!res.ok) return NextResponse.json({ error: text }, { status: res.status })
+
+    const json = JSON.parse(text)
+    // Supabase returns path like /object/upload/sign/... — add /storage/v1 prefix
+    let signedUrl: string = json.signedURL ?? json.signedUrl ?? json.url ?? ""
+    if (signedUrl.startsWith("/object/")) signedUrl = "/storage/v1" + signedUrl
+    // Return the full URL so browser doesn't need to reconstruct it
+    const fullSignedUrl = signedUrl.startsWith("http") ? signedUrl : `${SUPABASE_URL}${signedUrl}`
+    const publicUrl     = `${SUPABASE_URL}/storage/v1/object/public/emgo-media/${filename}`
+
+    return NextResponse.json({ signedUrl: fullSignedUrl, publicUrl })
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
 }
 
 // POST — upload file to storage AND save record to gallery table

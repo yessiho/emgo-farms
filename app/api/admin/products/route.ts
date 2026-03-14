@@ -55,14 +55,19 @@ export async function POST(req: Request) {
         }
       )
 
+      const uploadText = await uploadRes.text()
+      console.log("[upload] status:", uploadRes.status, "body:", uploadText)
+      console.log("[upload] SUPABASE_URL:", SUPABASE_URL ? "SET" : "MISSING")
+      console.log("[upload] SERVICE_KEY:", SERVICE_KEY ? "SET (len=" + SERVICE_KEY.length + ")" : "MISSING")
+
       if (!uploadRes.ok) {
-        const err = await uploadRes.text()
-        return NextResponse.json({ error: err }, { status: uploadRes.status })
+        return NextResponse.json({ error: uploadText }, { status: uploadRes.status })
       }
 
       const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/emgo-media/${filename}`
       return NextResponse.json({ url: publicUrl })
     } catch (err: any) {
+      console.log("[upload] caught error:", err.message)
       return NextResponse.json({ error: err.message }, { status: 500 })
     }
   }
