@@ -191,12 +191,12 @@ export const Footer = () => {
             <div className="space-y-2.5 sm:space-y-3">
 
               {/* Email */}
-              <a href="mailto:emgofarms@mail.com" className="flex items-start gap-3 group">
+              <a href="mailto:emgofarms@gmail.com" className="flex items-start gap-3 group">
                 <span className="mt-0.5 p-1.5 sm:p-2 rounded-lg bg-white/10 group-hover:bg-orange-500 transition flex-shrink-0">
                   <FaEnvelope size={11} className="text-orange-400 group-hover:text-white transition" />
                 </span>
                 <span className="text-gray-300 group-hover:text-orange-400 text-xs sm:text-sm transition-colors break-all leading-snug mt-0.5">
-                  emgofarms@mail.com
+                  emgofarms@gmail.com
                 </span>
               </a>
 

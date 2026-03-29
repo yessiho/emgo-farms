@@ -86,7 +86,7 @@ export default function ContactPage() {
           <a href="tel:+2348166727320" className="flex-1 flex flex-col items-center gap-1 py-4 text-green-700 hover:bg-green-50 transition">
             <Phone size={20} /><span className="text-xs font-semibold">Call</span>
           </a>
-          <a href="mailto:emgo@gmail.com" className="flex-1 flex flex-col items-center gap-1 py-4 text-orange-500 hover:bg-orange-50 transition">
+          <a href="mailto:emgofarms@gmail.com" className="flex-1 flex flex-col items-center gap-1 py-4 text-orange-500 hover:bg-orange-50 transition">
             <Mail size={20} /><span className="text-xs font-semibold">Email</span>
           </a>
         </div>
