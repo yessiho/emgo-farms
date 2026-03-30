@@ -6,7 +6,7 @@ import Link from "next/link"
 import { Phone, Mail, MapPin, Clock } from "lucide-react"
 import { FaWhatsapp } from "react-icons/fa"
 
-const WHATSAPP_NUMBER  = "2348166727320"
+const WHATSAPP_NUMBER  = "2348107301956"
 const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hello EMGO Farms! I'd like to get in touch regarding your products and services."
 )
@@ -22,7 +22,6 @@ export default function ContactPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => setForm({ ...form, [e.target.name]: e.target.value })
 
-  // ✅ FIXED: actually POSTs to /api/contact and saves to Supabase
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -83,7 +82,7 @@ export default function ContactPage() {
             className="flex-1 flex flex-col items-center gap-1 py-4 text-[#25D366] hover:bg-green-50 transition">
             <FaWhatsapp size={22} /><span className="text-xs font-semibold">WhatsApp</span>
           </a>
-          <a href="tel:+2348166727320" className="flex-1 flex flex-col items-center gap-1 py-4 text-green-700 hover:bg-green-50 transition">
+          <a href="tel:+2348107301956" className="flex-1 flex flex-col items-center gap-1 py-4 text-green-700 hover:bg-green-50 transition">
             <Phone size={20} /><span className="text-xs font-semibold">Call</span>
           </a>
           <a href="mailto:emgofarms@gmail.com" className="flex-1 flex flex-col items-center gap-1 py-4 text-orange-500 hover:bg-orange-50 transition">
@@ -124,31 +123,32 @@ export default function ContactPage() {
                     <p className="text-gray-500 text-sm sm:text-base leading-relaxed">House D27a, Road 61<br />Victoria Garden City<br />Lagos, Nigeria</p>
                   </div>
                 </div>
+
+                {/* Single official phone number */}
                 <div className="flex items-start gap-4">
                   <div className="bg-green-100 p-2.5 sm:p-3 rounded-xl flex-shrink-0"><Phone className="text-green-700" size={20} /></div>
                   <div>
                     <h4 className="font-bold text-green-800 mb-1 text-sm sm:text-base">Phone / WhatsApp</h4>
-                    <div className="space-y-1.5">
-                      {[
-                        { display: "+234 813 135 0333", wa: `https://wa.me/2348131350333?text=${WHATSAPP_MESSAGE}` },
-                        { display: "+234 816 672 7320", wa: `https://wa.me/2348166727320?text=${WHATSAPP_MESSAGE}` },
-                      ].map((num) => (
-                        <a key={num.display} href={num.wa} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm sm:text-base text-gray-600 hover:text-[#25D366] transition-colors">
-                          <FaWhatsapp size={14} className="text-[#25D366] flex-shrink-0" />
-                          <span>{num.display}</span>
-                        </a>
-                      ))}
-                    </div>
+                    <a
+                      href={WHATSAPP_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm sm:text-base text-gray-600 hover:text-[#25D366] transition-colors"
+                    >
+                      <FaWhatsapp size={14} className="text-[#25D366] flex-shrink-0" />
+                      <span>+234 810 730 1956</span>
+                    </a>
                   </div>
                 </div>
+
                 <div className="flex items-start gap-4">
                   <div className="bg-green-100 p-2.5 sm:p-3 rounded-xl flex-shrink-0"><Mail className="text-green-700" size={20} /></div>
                   <div>
                     <h4 className="font-bold text-green-800 mb-1 text-sm sm:text-base">Email</h4>
-                    <a href="mailto:emgo@gmail.com" className="text-gray-500 text-sm sm:text-base hover:text-orange-500 transition-colors">emgo@gmail.com</a>
+                    <a href="mailto:emgofarms@gmail.com" className="text-gray-500 text-sm sm:text-base hover:text-orange-500 transition-colors">emgofarms@gmail.com</a>
                   </div>
                 </div>
+
                 <div className="flex items-start gap-4">
                   <div className="bg-green-100 p-2.5 sm:p-3 rounded-xl flex-shrink-0"><Clock className="text-green-700" size={20} /></div>
                   <div>

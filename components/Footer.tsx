@@ -16,15 +16,14 @@ import {
 } from "react-icons/fa"
 
 // ── Config ────────────────────────────────────────────────────
-const WHATSAPP_NUMBER  = "2348166727320"
+const WHATSAPP_NUMBER  = "2348107301956"
 const WHATSAPP_MESSAGE = encodeURIComponent(
   "Hello EMGO Farms! I'd like to get in touch regarding your products and services."
 )
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
 
-// ── Both phone numbers link directly to WhatsApp ──────────────
-const PHONE_1 = { display: "08131350333", wa: `https://wa.me/2348131350333?text=${WHATSAPP_MESSAGE}` }
-const PHONE_2 = { display: "08166727320", wa: `https://wa.me/2348166727320?text=${WHATSAPP_MESSAGE}` }
+// ── Official WhatsApp number ──────────────────────────────────
+const PHONE_1 = { display: "+234 810 730 1956", wa: `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}` }
 
 const navLinks = [
   { label: "Home",     href: "/" },
@@ -37,12 +36,12 @@ const navLinks = [
 ]
 
 const socialLinks = [
-  { Icon: FaFacebookF,  href: "#",          label: "Facebook",  whatsapp: false },
-  { Icon: FaTwitter,    href: "#",          label: "Twitter",   whatsapp: false },
-  { Icon: FaInstagram,  href: "#",          label: "Instagram", whatsapp: false },
-  { Icon: FaLinkedinIn, href: "#",          label: "LinkedIn",  whatsapp: false },
-  { Icon: FaYoutube,    href: "#",          label: "YouTube",   whatsapp: false },
-  { Icon: FaWhatsapp,   href: WHATSAPP_URL, label: "WhatsApp",  whatsapp: true  },
+  { Icon: FaFacebookF,  href: "https://www.facebook.com/emgofarms",      label: "Facebook",  whatsapp: false },
+  { Icon: FaTwitter,    href: "https://x.com/emgofarms",                  label: "Twitter",   whatsapp: false },
+  { Icon: FaInstagram,  href: "https://www.instagram.com/emgofarms",      label: "Instagram", whatsapp: false },
+  { Icon: FaLinkedinIn, href: "https://www.linkedin.com/in/emgofarms",    label: "LinkedIn",  whatsapp: false },
+  { Icon: FaYoutube,    href: "https://youtube.com/@emgofarms",           label: "YouTube",   whatsapp: false },
+  { Icon: FaWhatsapp,   href: WHATSAPP_URL,                               label: "WhatsApp",  whatsapp: true  },
 ]
 
 export const Footer = () => {
@@ -200,7 +199,7 @@ export const Footer = () => {
                 </span>
               </a>
 
-              {/* Phone numbers — both link to WhatsApp */}
+              {/* Phone number — links to WhatsApp */}
               <div className="flex items-start gap-3">
                 <span className="mt-0.5 p-1.5 sm:p-2 rounded-lg bg-white/10 flex-shrink-0">
                   <FaPhoneAlt size={11} className="text-orange-400" />
@@ -214,15 +213,6 @@ export const Footer = () => {
                   >
                     <FaWhatsapp size={11} className="text-[#25D366] flex-shrink-0" />
                     {PHONE_1.display}
-                  </a>
-                  <a
-                    href={PHONE_2.wa}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-gray-300 hover:text-[#25D366] text-xs sm:text-sm transition-colors"
-                  >
-                    <FaWhatsapp size={11} className="text-[#25D366] flex-shrink-0" />
-                    {PHONE_2.display}
                   </a>
                 </div>
               </div>
@@ -257,7 +247,6 @@ export const Footer = () => {
           </div>
 
           {/* ── 4. Newsletter ── */}
-          
           <div>
             <h4 className="text-xs sm:text-sm font-bold mb-4 text-orange-400 uppercase tracking-widest">
               Newsletter
